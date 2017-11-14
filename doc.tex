@@ -88,9 +88,11 @@ $r$ - średni stopień niespełnienia warunku redundancji dla punktu z wnętrza 
 	$r = \frac{44*0 + 61*1}{105} = \frac{61}{105} = 0.58$\\
 	$f(p, k, r) = 1*0.225 - 1*0 - 1*0.58 = -0.355$
 \end{itemize}
+
 \section{Metaheurystyka}
+Do rozwiązania problemu użyjemy algorytmu symulowanego wyżarzania. Przy odpowiednio dobranych parametrach metoda ta, w porównaniu do algorytmów wspinaczkowych, daje większą szansę na znalezienie optymalnego rozwiązania, ponieważ zmniejsza ryzyko zatrzymania się w ekstremach lokalnych. W początkowej fazie przeszukiwania przestrzeni dopuszczalne jest przechodzenie do stanów gorszych (o mniejszej wartości funkcji celu). Wraz z rosnącą liczbą iteracji obszar poszukiwań jest ograniczany, a algorytm bardziej skupia się na poprawie bieżącego rozwiązania.
 
 \section{Przewidywane wyniki pracy}
-
+Przeprowadzona zostanie seria eksperymentów z różnymi wartościami parametrów $\alpha$, $\beta$, $r_{min}$ na kilku instancjach problemu (różne pomieszczenia). Sporządzone zostaną wykresy przedstawiające wartość funkcji celu oraz liczbę użytych kamer w zależności od liczby wykonanych iteracji. Sprawdzony zostanie wpływ parametru temperatury poprzez zmianę jego wartości początkowej oraz funkcji wygaszania.
 
 \end{document}
