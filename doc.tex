@@ -36,9 +36,8 @@ Jak optymalnie rozmieścić kamery monitoringu w ustalonym pomieszczeniu (rzut z
 
 \section{Przestrzeń przeszukiwań}
 \begin{itemize}
-	\item Stanem w przestrzeni przeszukiwań jest zbiór kamer wraz z ich położeniem.
-	\item Stan początkowy jest zbiorem zawierającym $n_{kmin}$ (obliczane jako stosunek pola powierzchni pomieszczenia do pola powierzchni zasięgu jednej kamery, zaokrąglany do jedności w górę) kamer rozmieszczonych losowo wewnątrz pomieszczenia.
-	\item Przejście do kolejnego stanu możliwe jest poprzez:
+	\item Elementem przestrzeni przeszukiwań jest zbiór kamer wraz z ich położeniem.
+	\item Przejście do sąsiedniego elementu możliwe jest poprzez:
 	\begin{itemize}
 		\item zmianę współrzędnych x lub y jednej z kamer o 1 jednostkę
 		\item dodanie nowej kamery w losowym miejscu
@@ -95,6 +94,7 @@ $r$ - średni stopień niespełnienia warunku redundancji dla punktu z wnętrza 
 \end{itemize}
 
 \section{Metaheurystyka}
+Element początkowy przestrzeni przeszukiwań jest zbiorem zawierającym $n_{kmin}$ (obliczane jako stosunek pola powierzchni pomieszczenia do pola powierzchni zasięgu jednej kamery, zaokrąglany do jedności w górę) kamer rozmieszczonych losowo wewnątrz pomieszczenia.\\
 Do rozwiązania problemu użyjemy algorytmu symulowanego wyżarzania. Przy odpowiednio dobranych parametrach metoda ta, w porównaniu do algorytmów wspinaczkowych, daje większą szansę na znalezienie optymalnego rozwiązania, ponieważ zmniejsza ryzyko zatrzymania się w ekstremach lokalnych. W początkowej fazie przeszukiwania przestrzeni dopuszczalne jest przechodzenie do stanów gorszych (o mniejszej wartości funkcji celu). Wraz z rosnącą liczbą iteracji obszar poszukiwań jest ograniczany, a algorytm bardziej skupia się na poprawie bieżącego rozwiązania.
 
 \section{Przewidywane wyniki pracy}
