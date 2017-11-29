@@ -30,33 +30,46 @@ Jak optymalnie rozmieścić kamery monitoringu w ustalonym pomieszczeniu (rzut z
 \begin{enumerate}
 
 \item Pomieszczenie jest wielokątem zawierającym tylko kąty o mierze 90 lub 270 stopni. Pomieszczenie reprezentowane jest przez zbiór punktów (z I ćwiartki układu współrzędnych) podanych w formie listy. Połączenie tych punktów linią, zgodnie z ich kolejnością na liście, skutkuje otrzymaniem linii łamanej ograniczającej pomieszczenie.
-\item Kamery mają jednakowy zasięg reprezentowany przez kwadrat o stałej długości boku równej 2 jednostki. Współrzędne kamery są jednocześnie współrzędnymi środka tego kwadratu. Kamera musi znajdować się wewnątrz pomieszczenia i nie przenika przez ściany.
-\item Wnętrze pomieszczenia zdyskretyzowane jest do zbioru punktów o współrzędnych całkowitych poprzez nałożenie siatki o gęstości 1 jednostki.
+\item Kamery mają jednakowy zasięg reprezentowany przez kwadrat o parametryzowanej długości
+boku. Współrzędne kamery są jednocześnie współrzędnymi środka tego kwadratu. Kamera musi znajdować się wewnątrz pomieszczenia i nie przenika przez ściany.
+\item Wnętrze pomieszczenia zdyskretyzowane jest do zbioru punktów o współrzędnych całkowitych poprzez nałożenie siatki o parametryzowanej gęstości.
 \end{enumerate}
 
 \section{Przestrzeń przeszukiwań}
 \begin{itemize}
-	\item Elementem przestrzeni przeszukiwań jest zbiór kamer wraz z ich położeniem.
+	\item Elementem przestrzeni przeszukiwań jest wektor par liczb całkowitych oznaczających współrzędne kamer:\\
+	$$[(x_1, y_1), ..., (x_i, y_i), ..., (x_k, y_k)]$$
+	gdzie:\\
+	$x_i$ - współrzędna x i-tej kamery,\\
+	$y_i$ - współrzędna y i-tej kamery,\\
+	$k$ - liczba kamer.
 	\item Przejście do sąsiedniego elementu możliwe jest poprzez:
 	\begin{itemize}
-		\item zmianę współrzędnych x lub y jednej z kamer o 1 jednostkę
-		\item dodanie nowej kamery w losowym miejscu
-		\item usunięcie jednej kamery
+		\item zmianę położenia jednej z kamer na 2 sposoby (sposób
+		ustalany jest na początku zadania):
+		\begin{itemize}
+		\item zmiana współrzędnych x lub y jednej z kamer o 1 jednostkę,
+		\item przeniesienie jednej z kamer do innego punktu z wnętrza pomieszczenia
+		wylosowanego zgodnie z rozkładem normalnym,
+		\end{itemize}
+		\item dodanie nowej kamery w losowym miejscu (rozkład jednostajny),
+		\item usunięcie jednej kamery.
 	\end{itemize}
+	\item Przestrzeń ma strukturę grafową, w której każda krawędź odpowiada
+	jednemu z wymienionych wyżej przejść między elementami przestrzeni.
 \end{itemize}
 
-
-\newpage
 \section{Funkcja celu}
 Informacje znane dla danej instancji problemu: \\
-$n_{kmin}$ - minimalna teoretyczna liczba kamer wymagana do pokrycia danego pomieszczenia \\
-$X$ - zbiór punktów reprezentujących wnętrze pomieszczenia \\
+$n_{kmin}$ - minimalna teoretyczna liczba kamer wymagana do pokrycia danego pomieszczenia
+(obliczana jako stosunek pola powierzchni pomieszczenia do pola powierzchni zasięgu jednej kamery, zaokrąglany do jedności w górę),\\
+$X$ - zbiór punktów reprezentujących wnętrze pomieszczenia. \\
 %
 \newline
-Parametry do strojenia: \\
-$\alpha$ - zysk z pokrycia $\frac{1}{100}$ pola powierzchni pomieszczenia \\
-$\beta$ - koszt użycia nadmiarowej kamery \\
-$r_{min}$ - minimalna liczba kamer pokrywająca każde miejsce w pomieszczeniu \\
+Parametry funkcji celu: \\
+$\alpha$ - zysk z pokrywania powierzchni pomieszczenia,\\
+$\beta$ - koszt użycia nadmiarowej kamery, \\
+$r_{min}$ - minimalna liczba kamer pokrywająca każde miejsce w pomieszczeniu. \\
 %
 \newline
 Zadanie polega na maksymalizacji funkcji: \\
@@ -65,8 +78,16 @@ gdzie: \\
 $p$ - stosunek powierzchni pokrytej przez kamery do powierzchni pomieszczenia \\
 $k$ - stosunek nadwyżki liczby kamer do $n_{kmin}$, obliczany wg. wzoru: \\
 \indent $k = \frac{max(0, n_k - n_{kmin})}{n_{kmin}}$, gdzie $n_k$ - liczba kamer w aktualnym stanie \\\\
-$r$ - średni stopień niespełnienia warunku redundancji dla punktu z wnętrza pomieszczenia, obliczany wg. wzoru: \\
-\indent $r = \frac{\sum_{x \in X}^{} max(0, r_{min} - r_x)}{|X|}$, gdzie $r_x$ - liczba kamer pokrywających punkt $x$
+Parametr $r$ może być obliczany na dwa sposoby (sposób ustalany jest na
+początku zadania):
+\begin{itemize}
+\item jako średni stopień niespełnienia warunku redundancji dla punktu z wnętrza pomieszczenia, obliczany wg. wzoru: \\
+\indent $r = \frac{\sum_{x \in X}^{} max(0, r_{min} - r_x)}{|X|}$, gdzie $r_x
+$ - liczba kamer pokrywających punkt $x$
+\item jako maksymalne niespełnienie warunku redundancji spośród wszystkich
+punktów z wnętrza pomieszczenia, wg. wzoru:\\
+$r = max(0, r_{min} - r_x)$, gdzie $r_x$ - liczba kamer pokrywających punkt $x$ będący najsłabiej pokrytym punktem.
+\end{itemize}
 
 %
 \section{Przykład}
@@ -89,15 +110,22 @@ $r$ - średni stopień niespełnienia warunku redundancji dla punktu z wnętrza 
 	Pole powierzchni pokryte przez kamery: 18\\
 	$p = \frac{18}{80} = 0.225$\\
 	$k = \frac{max(0, 6-20)}{20} = \frac{0}{20} = 0$\\
+	Parametr $r$ obliczany pierwszym sposobem:
 	$r = \frac{44*0 + 61*1}{105} = \frac{61}{105} = 0.58$\\
-	$f(p, k, r) = 1*0.225 - 1*0 - 1*0.58 = -0.355$
+	$f(p, k, r) = 1*0.225 - 1*0 - 1*0.58 = -0.355$\\\\
+	Parametr $r$ obliczany drugim sposobem:
+	$r = 1-0 = 1$\\
+	$f(p, k, r) = 1*0.225 - 1*0 - 1*1 = -0.775$
 \end{itemize}
 
 \section{Metaheurystyka}
-Element początkowy przestrzeni przeszukiwań jest zbiorem zawierającym $n_{kmin}$ (obliczane jako stosunek pola powierzchni pomieszczenia do pola powierzchni zasięgu jednej kamery, zaokrąglany do jedności w górę) kamer rozmieszczonych losowo wewnątrz pomieszczenia.\\
+Element początkowy przestrzeni przeszukiwań jest zbiorem zawierającym $n_{kmin}$ kamer rozmieszczonych losowo wewnątrz pomieszczenia.\\
 Do rozwiązania problemu użyjemy algorytmu symulowanego wyżarzania. Przy odpowiednio dobranych parametrach metoda ta, w porównaniu do algorytmów wspinaczkowych, daje większą szansę na znalezienie optymalnego rozwiązania, ponieważ zmniejsza ryzyko zatrzymania się w ekstremach lokalnych. W początkowej fazie przeszukiwania przestrzeni dopuszczalne jest przechodzenie do stanów gorszych (o mniejszej wartości funkcji celu). Wraz z rosnącą liczbą iteracji obszar poszukiwań jest ograniczany, a algorytm bardziej skupia się na poprawie bieżącego rozwiązania.
 
 \section{Przewidywane wyniki pracy}
-Przeprowadzona zostanie seria eksperymentów z różnymi wartościami parametrów $\alpha$, $\beta$, $r_{min}$ na kilku instancjach problemu (różne pomieszczenia). Sporządzone zostaną wykresy przedstawiające wartość funkcji celu oraz liczbę użytych kamer w zależności od liczby wykonanych iteracji. Sprawdzony zostanie wpływ parametru temperatury poprzez zmianę jego wartości początkowej oraz funkcji wygaszania.
+Przeprowadzona zostanie seria eksperymentów z różnymi wartościami parametrów $\alpha$, $\beta$, $r_{min}$ na kilku instancjach problemu (różne pomieszczenia). Dla ustalonych parametrów funkcji celu, sterować będziemy parametrami metaheurystyki, tj. funkcją wygaszania temperatury i jej
+wartością początkową. Ponadto sprawdzimy dwa podejścia do zmiany położenia kamery oraz dwa sposoby obliczania parametru $r$ funkcji celu. Dla wybranej
+instancji zadania sprawdzimy też wpływ gęstości siatki punktów z wnętrza
+pomieszczenia na zachowanie metaheurystyki. Sporządzone zostaną wykresy przedstawiające wartość funkcji celu oraz liczbę użytych kamer w zależności od liczby wykonanych iteracji. 
 
 \end{document}
