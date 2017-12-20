@@ -34,5 +34,6 @@
   "alpha": 1,
   "beta": 1,
   "r_min": 1,
-  "num_iterations": 100
+  "num_iterations": 100,
+  "camera_range" : 2
 }
