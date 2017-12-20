@@ -1,7 +1,7 @@
 import json
 from optparse import OptionParser
 from problem.ProblemInstance import ProblemInstance
-#from metaheuristics.simulated_annealing.simulated_annealing import SimulatedAnnealing
+from problem.SimulatedAnnealer import SimulatedAnnealer
 
 
 if __name__ == '__main__':
@@ -23,5 +23,5 @@ if __name__ == '__main__':
 
     # define problem and perform algorithm
     problem = ProblemInstance(config)
-    #sa = SimulatedAnnealing(config, problem)
-    #sa.perform()
+    sa = SimulatedAnnealer(problem, config)
+    sa.anneal()

@@ -50,7 +50,3 @@ class ProblemInstance:
     def calculateMinNumberOfCams(self):
         #TODO
         return 1
-
-    def getInitialState(self):
-        #TODO create list of tuples - cameras coords
-        return []

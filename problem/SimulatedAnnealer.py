@@ -1,9 +1,10 @@
 from simanneal import Annealer
+from problem.State import State
 
 class SimulatedAnnealer(Annealer):
 
-    def __init__(self, problemInstance, config):
-        self.problem = problemInstance
+    def __init__(self, problem, config):
+        self.problem = problem
         self.costs = []
 
         try:
@@ -13,14 +14,18 @@ class SimulatedAnnealer(Annealer):
         except KeyError as e:
             print("Exception. Option {} is missing in config file".format(e))
 
-        initState = self.problem.getInitialState()
+        initState = State(self.problem)
         super(SimulatedAnnealer, self).__init__(initState)
 
     def move(self):
-        #TODO modify current state
-        pass
+        self.state = self.state.generate_neighbour()
 
     def energy(self):
         #TODO calculate cost fun of current state
         # append current cost to self.costs
+        e = 0
+        self.costs.append(e)
+        return e
+
+    def update(self, *args, **kwargs):
         pass
