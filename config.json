@@ -35,5 +35,6 @@
   "beta": 1,
   "r_min": 1,
   "num_iterations": 100,
-  "camera_move_method": "local"
+  "camera_move_method": "local",
+  "camera_range" : 2
 }
