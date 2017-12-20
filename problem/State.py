@@ -20,7 +20,7 @@ class State:
 
     def generateCameras(self):
         cameras = []
-        for _ in range(self.problem.minNumberOfCams):
+        for _ in range(int(self.problem.minNumberOfCams)):
             cameras.append(Camera(self.problem, self.getRandomFreePointFromRoom()))
 
         return cameras
@@ -40,7 +40,7 @@ class State:
             newCamera = Camera(self.problem, self.getRandomFreePointFromRoom())
             self.cameras.append(newCamera)
         elif transformation == 'remove':
-            cameras.remove(random.choice(self.cameras))
+            self.cameras.remove(random.choice(self.cameras))
         else:
             toModify = random.choice(self.cameras)
             if cameraMoveMethod == 'local':
