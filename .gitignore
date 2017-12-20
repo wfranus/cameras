@@ -2,4 +2,7 @@
 *.log
 *.synctex.gz
 *.toc
+*.iml
+.idea
+__pycache__
 
