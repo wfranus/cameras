@@ -33,5 +33,6 @@
   "t_min": 10,
   "alpha": 1,
   "beta": 1,
-  "r_min": 1
+  "r_min": 1,
+  "num_iterations": 100
 }
