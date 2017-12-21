@@ -16,8 +16,8 @@ Find the optimal cameras' placement inside a given polygon using simmulated anne
 `deactivate` - leave env
 
 ## Running
-`workon cameras`
+`workon cameras`  
 `python main.py`
 
 ## Testing
-`python -m unittest problem.TestProblemInstance`
+`python -m unittest discover`

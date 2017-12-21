@@ -6,6 +6,12 @@ class Camera:
         self.x = float(pos[0])
         self.y = float(pos[1])
 
+    def __eq__(self, other):
+        if self.problem == other.problem \
+                and self.x == other.x and self.y == other.y:
+            return True
+        return False
+
     def move(self, newPos = None):
         if newPos:
             self.x = float(newPos[0])

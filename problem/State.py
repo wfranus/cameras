@@ -7,16 +7,22 @@ class State:
     def __init__(self, problem, cameras=None):
         self.problem = problem
         self.cameras = []
-        self.cameras = cameras if cameras else self.generateCameras()
+        self.cameras = cameras if cameras is not None else self.generateCameras()
 
     def getRandomFreePointFromRoom(self):
-        def isCameraPos(pos):
-            for c in self.cameras:
+        def isCameraPos(cls, pos):
+            for c in cls.cameras:
                 if c.x == pos[0] and c.y == pos[1]:
                     return True
             return False
 
-        return random.choice([p for p in self.problem.insidePoints if not isCameraPos(p)])
+        freePoints = [p for p in self.problem.insidePoints if not isCameraPos(self, p)]
+
+        if freePoints == []:
+            error = "Exception in State.getRandomFreePointFromRoom: no points left!"
+            raise RuntimeError(error)
+        else:
+            return random.choice(freePoints)
 
     def generateCameras(self):
         cameras = []
