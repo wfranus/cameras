@@ -1,21 +1,31 @@
 
 class ConfigValidator:
-    def __init__(self):
-        pass
-    
-    @staticmethod
-    def validateIntegerParameter(config, parameter, default_value):
-        value = config.get(parameter, default_value)
+    def __init__(self, config):
+        self.config = config
+
+    def getIntegerParameter(self, parameter, default_value=None):
+        value = self.config.get(parameter, default_value)
+        print(value)
         if not ConfigValidator.isInteger(value) or value <= 0:
             ConfigValidator.raiseError(parameter, value)
         return value
 
-    @staticmethod
-    def validateDoubleParameter(config, parameter, default_value):
-        value = config.get(parameter, default_value)
+    def getDoubleParameter(self, parameter, default_value=None):
+        value = self.config.get(parameter, default_value)
         if not ConfigValidator.isFloat(value):
             ConfigValidator.raiseError(parameter, value)
         return value
+
+    def getParameter(self, parameter, validate_possible_values=None, default_value=None):
+        if default_value:
+            move = self.config.get(parameter, default_value)
+        else:
+            move = self.config[parameter]
+
+        if validate_possible_values:
+            if move not in validate_possible_values:
+                ConfigValidator.raiseError(parameter, move)
+        return move
 
     @staticmethod
     def raiseError(parameter, value):

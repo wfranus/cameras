@@ -36,7 +36,7 @@ class TestState(TestCase):
         p1, p2, p3 = (0, 1), (2, 3), (4, 5)
 
         problem = MockProblemInstance()
-        problem.insidePoints = [p1, p2, p3]
+        problem.inside_points = [p1, p2, p3]
 
         c1 = MagicMock()
         c1.problem = problem
@@ -51,7 +51,7 @@ class TestState(TestCase):
         c3.x, c3.y = p3
 
         s1 = State(problem, [])
-        self.assertIn(s1.getRandomFreePointFromRoom(), problem.insidePoints)
+        self.assertIn(s1.getRandomFreePointFromRoom(), problem.inside_points)
 
         s2 = State(problem, [c1])
         self.assertIn(s2.getRandomFreePointFromRoom(), [p2, p3])
@@ -66,14 +66,14 @@ class TestState(TestCase):
     @patch('problem.ProblemInstance')
     def testGenerateCameras(self, MockProblemInstance):
         problem = MockProblemInstance()
-        problem.minNumberOfCams = 2
+        problem.min_number_of_cams = 2
 
         s = State(problem, [])
         s.getRandomFreePointFromRoom = MagicMock(return_value=(1, 1))
 
         cameras = s.generateCameras()
 
-        self.assertEqual(len(cameras), problem.minNumberOfCams)
+        self.assertEqual(len(cameras), problem.min_number_of_cams)
         self.assertEqual(len(s.getRandomFreePointFromRoom.mock_calls), 2)
 
 if __name__ == '__main__':

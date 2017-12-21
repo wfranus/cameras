@@ -4,37 +4,35 @@ import numpy as np
 from problem.ConfigValidator import ConfigValidator
 
 class ProblemInstance:
-    def __init__(self, config):
+    def __init__(self, config_validator):
+        self.config_validator = config_validator
         try:
-            self.loadAndValidateConfig(config)
+            self.camera_range = config_validator.getIntegerParameter('camera_range', 1)
+            self.r_min = config_validator.getIntegerParameter('r_min', 1)
+            self.alpha = config_validator.getDoubleParameter('alpha', 1.0)
+            self.beta = config_validator.getDoubleParameter('beta', 1.0)
+            self.room_path, self.room_points = self.loadRoomFromConfig(config_validator.getParameter('room'))
+            self.min_number_of_cams = self.calculateMinNumberOfCams()
+            self.inside_points = self.calculateInsidePoints()
         except KeyError as e:
-            print("Exception. Option {} is missing in config file".format(e))
-
-    def loadAndValidateConfig(self, config):
-        self.camera_range = ConfigValidator.validateIntegerParameter(config, 'camera_range', 1)
-        self.r_min = ConfigValidator.validateIntegerParameter(config, 'r_min', 1)
-        self.alpha = ConfigValidator.validateDoubleParameter(config, 'alpha', 1.0)
-        self.beta = ConfigValidator.validateDoubleParameter(config, 'beta', 1.0)
-        self.loadRoomFromConfig(config['room'])
-        self.minNumberOfCams = self.calculateMinNumberOfCams()
-        self.insidePoints = self.calculateInsidePoints()
-
+            print("Error: Option {} is missing in config file".format(e))
 
     def loadRoomFromConfig(self, room):
         # read room vertices from config
         points = []
+        print("asdasd", room)
         for vertex in room:
             x = vertex['x']
             y = vertex['y']
             point = (x,y)
             points.append(point)
-        self.room = path.Path(points, closed=True)
-        self.roomPoints = points
+        room_path = path.Path(points, closed=True)
+        return room_path, points
 
 
     def calculateInsidePoints(self):
         # get bounding box of room
-        bbox = path.get_paths_extents([self.room])
+        bbox = path.get_paths_extents([self.room_path])
         #print('BBox', bbox)
         (width, height) = bbox.size
 
@@ -48,7 +46,7 @@ class ProblemInstance:
         insidePoints = []
         for point in bbox_points:
             #print(point, self.room.contains_point(point, radius=-0.1))
-            if self.room.contains_point(point, radius=-0.1):
+            if self.room_path.contains_point(point, radius=-0.1):
                 insidePoints.append((point[0], point[1]))
                 in_points_x.append(point[0])
                 in_points_y.append(point[1])
@@ -56,7 +54,7 @@ class ProblemInstance:
         return insidePoints
 
     def calculateMinNumberOfCams(self):
-        return self.polygonArea(self.roomPoints) / self.camera_range
+        return self.polygonArea(self.room_points) / self.camera_range
 
     def polygonArea(self, room_points):
         n = len(room_points) # of corners

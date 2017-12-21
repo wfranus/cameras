@@ -2,6 +2,7 @@ import json
 from optparse import OptionParser
 from problem.ProblemInstance import ProblemInstance
 from problem.SimulatedAnnealer import SimulatedAnnealer
+from problem.ConfigValidator import ConfigValidator
 
 
 if __name__ == '__main__':
@@ -22,6 +23,7 @@ if __name__ == '__main__':
         config = json.load(file)
 
     # define problem and perform algorithm
-    problem = ProblemInstance(config)
-    sa = SimulatedAnnealer(problem, config)
+    config_validator = ConfigValidator(config)
+    problem = ProblemInstance(config_validator)
+    sa = SimulatedAnnealer(problem, config_validator)
     sa.anneal()

@@ -16,7 +16,7 @@ class State:
                     return True
             return False
 
-        freePoints = [p for p in self.problem.insidePoints if not isCameraPos(self, p)]
+        freePoints = [p for p in self.problem.inside_points if not isCameraPos(self, p)]
 
         if freePoints == []:
             error = "Exception in State.getRandomFreePointFromRoom: no points left!"
@@ -26,12 +26,12 @@ class State:
 
     def generateCameras(self):
         cameras = []
-        for _ in range(int(self.problem.minNumberOfCams)):
+        for _ in range(int(self.problem.min_number_of_cams)):
             cameras.append(Camera(self.problem, self.getRandomFreePointFromRoom()))
 
         return cameras
 
-    def generateNeighbour(self, cameraMoveMethod):
+    def generateNeighbour(self, camera_move_method):
         # deep copy cameras
         cameras = [copy.copy(c) for c in self.cameras]
 
@@ -49,9 +49,9 @@ class State:
             self.cameras.remove(random.choice(self.cameras))
         else:
             toModify = random.choice(self.cameras)
-            if cameraMoveMethod == 'local':
+            if camera_move_method == 'local':
                 toModify.move()
-            elif cameraMoveMethod == 'random':
+            elif camera_move_method == 'random':
                 toModify.move(self.getRandomFreePointFromRoom())
             else:
                 print("Wrong move camera method!")
