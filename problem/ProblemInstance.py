@@ -20,7 +20,6 @@ class ProblemInstance:
     def loadRoomFromConfig(self, room):
         # read room vertices from config
         points = []
-        print("asdasd", room)
         for vertex in room:
             x = vertex['x']
             y = vertex['y']
@@ -43,17 +42,19 @@ class ProblemInstance:
 
         in_points_x = []
         in_points_y = []
-        insidePoints = []
+        inside_points = []
         for point in bbox_points:
             #print(point, self.room.contains_point(point, radius=-0.1))
             if self.room_path.contains_point(point, radius=-0.1):
-                insidePoints.append((point[0], point[1]))
+                inside_points.append((point[0], point[1]))
                 in_points_x.append(point[0])
                 in_points_y.append(point[1])
 
-        return insidePoints
+        return inside_points
 
     def calculateMinNumberOfCams(self):
+        #TODO: czy camera_range to pole powierzchni czy bok kwadratu?
+        # jesli to drugie to trzeba podniesc do potegi 2
         return self.polygonArea(self.room_points) / self.camera_range
 
     def polygonArea(self, room_points):

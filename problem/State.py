@@ -36,7 +36,9 @@ class State:
         cameras = [copy.copy(c) for c in self.cameras]
 
         # randomly choose transformation
-        if len(cameras) == 1:
+        if len(cameras) == 0:
+            transformation = 'insert'
+        elif len(cameras) == 1:
             transformation = random.choice(['insert', 'move'])
         else:
             transformation = random.choice(['insert', 'remove', 'move'])
@@ -44,9 +46,9 @@ class State:
         # perform transformation
         if transformation == 'insert':
             newCamera = Camera(self.problem, self.getRandomFreePointFromRoom())
-            self.cameras.append(newCamera)
+            cameras.append(newCamera)
         elif transformation == 'remove':
-            self.cameras.remove(random.choice(self.cameras))
+            cameras.remove(random.choice(self.cameras))
         else:
             toModify = random.choice(self.cameras)
             if camera_move_method == 'local':
