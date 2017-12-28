@@ -27,11 +27,5 @@ if __name__ == '__main__':
     config_validator = ConfigValidator(config)
     problem = ProblemInstance(config_validator)
     sa = SimulatedAnnealer(problem, config_validator)
-
-    PlotCreator.createStatePlot("out/room", sa.state, room_only=True)
-    PlotCreator.createStatePlot("out/initial_state", sa.state, room_only=False)
-
     sa.anneal()
-
-    PlotCreator.createStatePlot("out/final_state", sa.state, room_only=False)
     PlotCreator.createCostPlot("out/costs", sa.costs)

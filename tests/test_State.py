@@ -78,7 +78,7 @@ class TestState(TestCase):
         self.assertEqual(len(cameras), problem.min_number_of_cams)
         self.assertEqual(len(s.getRandomFreePointFromRoom.mock_calls), 2)
 
-    def testGenerateNeighnour(self):
+    def testGenerateNeighbour(self):
         problem = MagicMock()
 
         c1 = MagicMock()
@@ -127,6 +127,7 @@ class TestState(TestCase):
         else:
             # remove
             self.assertEqual(len(new_state.cameras), len(s3.cameras) - 1)
+
 
 if __name__ == '__main__':
     unittest.main()

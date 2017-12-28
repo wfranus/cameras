@@ -1,5 +1,6 @@
 from simanneal import Annealer
 from problem.State import State
+from problem.PlotCreator import PlotCreator
 
 
 class SimulatedAnnealer(Annealer):
@@ -8,7 +9,6 @@ class SimulatedAnnealer(Annealer):
         self.config_validator = config_validator
         self.problem = problem
         self.costs = []
-        self.updates = 10
         self.state = State(self.problem)
         self.camera_move_method = config_validator.getParameter('camera_move_method', ['local', 'random'], 'local')
         self.r_count_method = config_validator.getParameter('r_count_method', ['average', 'max'], 'average')
@@ -17,6 +17,9 @@ class SimulatedAnnealer(Annealer):
             self.temp_max = config_validator.getIntegerParameter('t_max', 5000)
             self.temp_min = config_validator.getIntegerParameter('t_min', 50)
             self.steps = config_validator.getIntegerParameter('num_iterations', 100)
+            self.updates = config_validator.getIntegerParameter('num_updates', 10)
+            self.update_counter = 0
+
             self.r_min = config_validator.getIntegerParameter('r_min', 100)
             self.alpha = config_validator.getDoubleParameter('alpha', 100)
             self.beta = config_validator.getDoubleParameter('beta', 100)
@@ -31,17 +34,32 @@ class SimulatedAnnealer(Annealer):
 
     # override
     def energy(self):
-        e = self.alpha * self.getCoverage() \
-            - self.beta * self.getCameraCostRatio() \
-            - self.getRedundancyParameter() / self.r_min
-        e *= -1  # use for maximization
-        self.costs.append(e)
-        return e
+        coverage_energy = self.alpha * self.getCoverage()
+        camera_cost = self.beta * self.getCameraCostRatio()
+        redundancy_cost = self.getRedundancyParameter() / self.r_min
+
+        energy = coverage_energy - camera_cost - redundancy_cost
+        energy *= -1  # use for maximization
+        self.costs.append(energy)
+
+        # save energy's components for output
+        self.state.energy = energy
+        self.state.coverage_energy = coverage_energy
+        self.state.camera_cost = camera_cost
+        self.state.redundancy_cost = redundancy_cost
+
+        return energy
 
     # override
     def update(self, *args, **kwargs):
-        for c in self.state.cameras:
-            print(c.x, c.y)
+        print("========== Update annealing:", self.update_counter, " ==========")
+        print("Total energy:    ", self.state.energy)
+        print("coverage_energy: ", self.state.coverage_energy)
+        print("camera_cost:     ", self.state.camera_cost)
+        print("redundancy_cost: ", self.state.redundancy_cost)
+
+        PlotCreator.createStatePlot("out/state_" + str(self.update_counter), self.state, room_only=False)
+        self.update_counter += 1
 
     def getCoverage(self):
         covered_points = set()

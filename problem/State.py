@@ -8,21 +8,27 @@ class State:
         self.problem = problem
         self.cameras = []
         self.cameras = cameras if cameras is not None else self.generateCameras()
+        self.energy = None
+        self.coverage_energy = None
+        self.camera_cost = None
+        self.redundancy_cost = None
 
     def getRandomFreePointFromRoom(self):
+        free_points = self.getFreePoints()
+        if not free_points:
+            error = "Exception in State.getRandomFreePointFromRoom: no points left!"
+            raise RuntimeError(error)
+        else:
+            return random.choice(free_points)
+
+    def getFreePoints(self):
         def isCameraPos(cls, pos):
             for c in cls.cameras:
                 if c.x == pos[0] and c.y == pos[1]:
                     return True
             return False
 
-        free_points = list(filter(lambda p: not isCameraPos(self, p), self.problem.inside_points))
-
-        if not free_points:
-            error = "Exception in State.getRandomFreePointFromRoom: no points left!"
-            raise RuntimeError(error)
-        else:
-            return random.choice(free_points)
+        return list(filter(lambda p: not isCameraPos(self, p), self.problem.inside_points))
 
     def generateCameras(self):
         cameras = []
@@ -35,29 +41,37 @@ class State:
         # deep copy cameras
         cameras = [copy.copy(c) for c in self.cameras]
 
-        # randomly choose transformation
-        if len(cameras) == 0:
-            transformation = 'insert'
-        elif len(cameras) == 1:
-            transformation = random.choice(['insert', 'move'])
-        else:
-            transformation = random.choice(['insert', 'remove', 'move'])
+        transformation = self.randomlyChooseTransformationMethod(cameras)
 
         # perform transformation
         if transformation == 'insert':
-            newCamera = Camera(self.problem, self.getRandomFreePointFromRoom())
-            cameras.append(newCamera)
+            new_camera = Camera(self.problem, self.getRandomFreePointFromRoom())
+            cameras.append(new_camera)
         elif transformation == 'remove':
             cameras.remove(random.choice(self.cameras))
-        else:
-            toModify = random.choice(self.cameras)
+        elif transformation == 'move':
+            to_modify = random.choice(self.cameras)
             if camera_move_method == 'local':
-                toModify.move()
+                to_modify.move()
             elif camera_move_method == 'random':
-                toModify.move(self.getRandomFreePointFromRoom())
+                to_modify.move(self.getRandomFreePointFromRoom())
             else:
-                print("Wrong move camera method!")
-                raise RuntimeError
+                raise RuntimeError("Wrong move camera method!")
+        else:
+            raise RuntimeError("Wrong transformation method!")
 
-        # return new state
         return State(self.problem, cameras)
+
+    def randomlyChooseTransformationMethod(self, cameras):
+        free_points = self.getFreePoints()
+        choices = set()
+
+        if len(free_points) > 0:
+            choices.update({'insert', 'move'})
+
+        if len(cameras) <= 1:
+            choices.add('insert')
+        else:
+            choices.update({'remove', 'move'})
+        return random.choice(tuple(choices))
+

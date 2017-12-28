@@ -29,12 +29,13 @@
       "y": 0.0
     }
   ],
-  "t_max": 100,
-  "t_min": 10,
-  "alpha": 1,
+  "t_max": 2500.0,
+  "t_min": 2.5,
+  "alpha": 10,
   "beta": 1,
   "r_min": 1,
-  "num_iterations": 100,
+  "num_iterations": 1000,
+  "num_updates" : 10,
   "camera_move_method": "local",
   "camera_side" : 2,
   "r_count_method": "average"

@@ -33,18 +33,26 @@ class PlotCreator:
 
         # draw point covered by cameras
         if not room_only:
+            cam_center_x = []
+            cam_center_y = []
             for c in state.cameras:
-                cam_points_x = []
-                cam_points_y = []
+                cam_center_x.append(c.x)
+                cam_center_y.append(c.y)
+
+                cam_covered_points_x = []
+                cam_covered_points_y = []
                 for p in c.covered_points:
-                    cam_points_x.append(p[0])
-                    cam_points_y.append(p[1])
+                    cam_covered_points_x.append(p[0])
+                    cam_covered_points_y.append(p[1])
                 cam_patch = patches.PathPatch(c.getCameraRect(),
                                               fill=False, color="blue",
                                               lw=1, zorder=1)
                 ax.add_patch(cam_patch)
-                cam_plot_point = plt.scatter(cam_points_x, cam_points_y,
-                                             color="yellow", s=10, zorder=3)
+                cam_plot_covered_point = plt.scatter(cam_covered_points_x, cam_covered_points_y,
+                                                     color="yellow", s=10, zorder=4)
+
+            cam_plot_center_point = plt.scatter(cam_center_x, cam_center_y,
+                                                color="red", s=40, zorder=3)
 
         # name axis
         plt.ylabel('y')
@@ -55,10 +63,11 @@ class PlotCreator:
             plt.legend([room_patch, (room_patch, inside_plot_point)],
                        ["room", "point inside room"])
         else:
-            plt.legend([inside_plot_point, (inside_plot_point, cam_plot_point)],
-                       ["not covered point", "covered point"])
+            plt.legend([inside_plot_point, cam_plot_covered_point, cam_plot_center_point, cam_patch],
+                       ["not covered point", "covered point", "camera position", "camera boundary"])
 
         fig.savefig(file_name + '.png', dpi=180, bbox_inches='tight')
+        plt.close()
 
     @staticmethod
     def createCostPlot(file_name, costs):
@@ -69,3 +78,5 @@ class PlotCreator:
         plt.xlabel('iteration')
 
         fig.savefig(file_name + '.png', dpi=90)
+        plt.close()
+
