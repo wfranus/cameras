@@ -21,3 +21,8 @@ Find the optimal cameras' placement inside a given polygon using simmulated anne
 
 ## Testing
 `python -m unittest discover`
+
+## MacOS environment
+1. `brew install python3`
+1. `pyvenv cameras`
+1. `source cameras/bin/activate`

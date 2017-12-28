@@ -5,4 +5,5 @@
 *.iml
 .idea
 __pycache__
-
+cameras/
+*.png

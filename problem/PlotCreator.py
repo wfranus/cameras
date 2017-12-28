@@ -5,6 +5,9 @@ import matplotlib.patches as patches
 
 class PlotCreator:
 
+    def __init__(self):
+        pass
+
     @staticmethod
     def createStatePlot(file_name, state, room_only=False):
         fig = plt.figure()

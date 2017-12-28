@@ -32,7 +32,7 @@ class TestState(TestCase):
         sa.beta = 3.0
         sa.r_min = 4
 
-        self.assertAlmostEqual(sa.energy(), 0.375, delta=0.001)
+        self.assertAlmostEqual(sa.energy(), -0.375, delta=0.001)
         self.assertEqual(len(sa.costs), 1)
         self.assertEqual(len(sa.getCoverage.mock_calls), 1)
         self.assertEqual(len(sa.getCameraCostRatio.mock_calls), 1)

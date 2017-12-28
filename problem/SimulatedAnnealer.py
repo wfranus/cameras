@@ -9,6 +9,7 @@ class SimulatedAnnealer(Annealer):
         self.problem = problem
         self.costs = []
         self.updates = 10
+        self.state = State(self.problem)
         self.camera_move_method = config_validator.getParameter('camera_move_method', ['local', 'random'], 'local')
         self.r_count_method = config_validator.getParameter('r_count_method', ['average', 'max'], 'average')
 
@@ -22,20 +23,22 @@ class SimulatedAnnealer(Annealer):
         except KeyError as e:
             print("Exception. Option {} is missing in config file".format(e))
 
-        init_state = State(self.problem)
-        super(SimulatedAnnealer, self).__init__(init_state)
+        super(SimulatedAnnealer, self).__init__(self.state)
 
+    # override
     def move(self):
         self.state = self.state.generateNeighbour(self.camera_move_method)
 
+    # override
     def energy(self):
         e = self.alpha * self.getCoverage() \
             - self.beta * self.getCameraCostRatio() \
-            - self.getRedundancyParameter()/self.r_min
-
+            - self.getRedundancyParameter() / self.r_min
+        e *= -1  # use for maximization
         self.costs.append(e)
         return e
 
+    # override
     def update(self, *args, **kwargs):
         for c in self.state.cameras:
             print(c.x, c.y)
@@ -46,7 +49,7 @@ class SimulatedAnnealer(Annealer):
         for c in self.state.cameras:
             covered_points.update(c.covered_points)
 
-        if len(self.problem.inside_points) == 0.0:
+        if len(self.problem.inside_points) == 0:
             raise RuntimeError("number of room inside points cannot be 0!!")
 
         coverage = len(covered_points) / float(len(self.problem.inside_points))
@@ -57,7 +60,7 @@ class SimulatedAnnealer(Annealer):
         num_cameras = len(self.state.cameras)
         ratio = max(0, num_cameras - self.problem.min_number_of_cams)
 
-        if self.problem.min_number_of_cams == 0.0:
+        if self.problem.min_number_of_cams == 0:
             raise RuntimeError("k_min cannot be 0!")
 
         ratio /= float(self.problem.min_number_of_cams)

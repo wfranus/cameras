@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 
+
 class Camera:
     def __init__(self, problem, pos):
         self.problem = problem
@@ -12,28 +13,26 @@ class Camera:
         self.covered_points = self.getCoveredPoints()
 
     def __eq__(self, other):
-        if self.problem == other.problem \
-                and self.x == other.x and self.y == other.y:
-            return True
-        return False
+        return self.problem == other.problem \
+               and self.x == other.x and self.y == other.y
 
-    def move(self, newPos = None):
-        if newPos:
-            self.x = float(newPos[0])
-            self.y = float(newPos[1])
+    def move(self, new_pos=None):
+        if new_pos:
+            self.x = float(new_pos[0])
+            self.y = float(new_pos[1])
         else:
             self.x += random.choice([-1, 0, 1])
             self.y += random.choice([-1, 0, 1])
 
     def getCameraRect(self):
-        rect_side = self.problem.camera_range
-        diff = rect_side/2
+        rect_side = self.problem.camera_side
+        diff = rect_side / 2
         rect_vertices = [
             (self.x - diff, self.y - diff),
             (self.x - diff, self.y + diff),
             (self.x + diff, self.y + diff),
             (self.x + diff, self.y - diff),
-            (self.x - diff, self.y - diff), # doubled first vertex
+            (self.x - diff, self.y - diff),  # doubled first vertex
         ]
         return path.Path(rect_vertices, closed=True)
 

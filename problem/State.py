@@ -16,17 +16,17 @@ class State:
                     return True
             return False
 
-        freePoints = list(filter(lambda p: not isCameraPos(self, p), self.problem.inside_points))
+        free_points = list(filter(lambda p: not isCameraPos(self, p), self.problem.inside_points))
 
-        if freePoints == []:
+        if not free_points:
             error = "Exception in State.getRandomFreePointFromRoom: no points left!"
             raise RuntimeError(error)
         else:
-            return random.choice(freePoints)
+            return random.choice(free_points)
 
     def generateCameras(self):
         cameras = []
-        for _ in range(int(self.problem.min_number_of_cams)):
+        for _ in range(self.problem.min_number_of_cams):
             cameras.append(Camera(self.problem, self.getRandomFreePointFromRoom()))
 
         return cameras
