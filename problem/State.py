@@ -16,7 +16,7 @@ class State:
                     return True
             return False
 
-        freePoints = [p for p in self.problem.inside_points if not isCameraPos(self, p)]
+        freePoints = list(filter(lambda p: not isCameraPos(self, p), self.problem.inside_points))
 
         if freePoints == []:
             error = "Exception in State.getRandomFreePointFromRoom: no points left!"

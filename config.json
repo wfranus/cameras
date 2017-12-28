@@ -36,5 +36,6 @@
   "r_min": 1,
   "num_iterations": 100,
   "camera_move_method": "local",
-  "camera_range" : 2
+  "camera_range" : 2,
+  "r_count_method": "average"
 }

@@ -8,7 +8,7 @@ class TestProblemInstance(TestCase):
     def test_PolygonArea(self):
         cameraRange = 2
         roomArea = 48
-        expectedMinNumberOfCameras = roomArea / cameraRange
+        expectedMinNumberOfCameras = roomArea / cameraRange / cameraRange
         config = {
             "camera_range": cameraRange,
             "room": [

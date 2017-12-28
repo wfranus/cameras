@@ -1,7 +1,5 @@
 from simanneal import Annealer
 from problem.State import State
-from problem.ConfigValidator import ConfigValidator
-from pprint import pprint
 
 
 class SimulatedAnnealer(Annealer):
@@ -12,6 +10,7 @@ class SimulatedAnnealer(Annealer):
         self.costs = []
         self.updates = 10
         self.camera_move_method = config_validator.getParameter('camera_move_method', ['local', 'random'], 'local')
+        self.r_count_method = config_validator.getParameter('r_count_method', ['average', 'max'], 'average')
 
         try:
             self.temp_max = config_validator.getIntegerParameter('t_max', 5000)
@@ -42,16 +41,47 @@ class SimulatedAnnealer(Annealer):
             print(c.x, c.y)
 
     def getCoverage(self):
-        room_points = [copy.copy(c) for c in self.problem.inside_points]
+        covered_points = set()
 
         for c in self.state.cameras:
-            p = (c.x, c.y)
-            pass
+            covered_points.update(c.covered_points)
 
-        return 1.0
+        if len(self.problem.inside_points) == 0.0:
+            raise RuntimeError("number of room inside points cannot be 0!!")
+
+        coverage = len(covered_points) / float(len(self.problem.inside_points))
+        #print("Coverage: ", coverage)
+        return coverage
 
     def getCameraCostRatio(self):
-        return 1.0
+        num_cameras = len(self.state.cameras)
+        ratio = max(0, num_cameras - self.problem.min_number_of_cams)
+
+        if self.problem.min_number_of_cams == 0.0:
+            raise RuntimeError("k_min cannot be 0!")
+
+        ratio /= float(self.problem.min_number_of_cams)
+        #print("k = ", ratio)
+        return ratio
 
     def getRedundancyParameter(self):
-        return 1.0
+        def count_redundancy():
+            redundancy_list = []
+            for p in self.problem.inside_points:
+                r_x = 0
+                for c in self.state.cameras:
+                    if p in c.covered_points:
+                        r_x += 1
+                redundancy_list.append(max(0, self.r_min - r_x))
+            return redundancy_list
+
+        if len(self.problem.inside_points) == 0.0:
+            raise RuntimeError("number of room inside points cannot be 0!!")
+
+        if self.r_count_method == 'average':
+            r_sum = sum(count_redundancy())
+            return r_sum / float(len(self.problem.inside_points))
+        elif self.r_count_method == 'max':
+            return max(count_redundancy())
+        else:
+            raise RuntimeError("Unrecognized r_count_method!")

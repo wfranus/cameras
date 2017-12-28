@@ -1,7 +1,6 @@
 from matplotlib import path
 
 import numpy as np
-from problem.ConfigValidator import ConfigValidator
 
 class ProblemInstance:
     def __init__(self, config_validator):
@@ -32,7 +31,6 @@ class ProblemInstance:
     def calculateInsidePoints(self):
         # get bounding box of room
         bbox = path.get_paths_extents([self.room_path])
-        #print('BBox', bbox)
         (width, height) = bbox.size
 
         # get all points inside bbox
@@ -40,22 +38,18 @@ class ProblemInstance:
         x, y = x.flatten(), y.flatten()
         bbox_points = np.vstack((x,y)).T
 
-        in_points_x = []
-        in_points_y = []
         inside_points = []
         for point in bbox_points:
-            #print(point, self.room.contains_point(point, radius=-0.1))
             if self.room_path.contains_point(point, radius=-0.1):
                 inside_points.append((point[0], point[1]))
-                in_points_x.append(point[0])
-                in_points_y.append(point[1])
 
         return inside_points
 
     def calculateMinNumberOfCams(self):
         #TODO: czy camera_range to pole powierzchni czy bok kwadratu?
         # jesli to drugie to trzeba podniesc do potegi 2
-        return self.polygonArea(self.room_points) / self.camera_range
+        camera_area = self.camera_range * self.camera_range
+        return self.polygonArea(self.room_points) / camera_area
 
     def polygonArea(self, room_points):
         n = len(room_points) # of corners
