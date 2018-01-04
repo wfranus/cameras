@@ -66,12 +66,10 @@ class State:
         free_points = self.getFreePoints()
         choices = set()
 
-        if len(free_points) > 0:
-            choices.update({'insert', 'move'})
-
         if len(cameras) <= 1:
             choices.add('insert')
         else:
-            choices.update({'remove', 'move'})
+            choices.add('remove')
+            if len(free_points) > 0:
+                choices.update({'insert', 'move'})
         return random.choice(tuple(choices))
-
