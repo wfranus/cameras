@@ -73,6 +73,10 @@ class PlotCreator:
     def createCostPlot(file_name, costs):
         fig = plt.figure(figsize=(10, 10))
 
+        ymin = min(costs)
+        ymax = max(costs)
+        plt.ylim(ymin, ymax)
+
         plt.plot(range(len(costs)), costs)
         plt.ylabel('cost')
         plt.xlabel('iteration')
