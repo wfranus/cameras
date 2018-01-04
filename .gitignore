@@ -6,4 +6,6 @@
 .idea
 __pycache__
 cameras/
-*.png
+out
+*.pyc
+.DS_Store
