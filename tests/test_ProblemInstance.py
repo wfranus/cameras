@@ -11,7 +11,7 @@ class TestProblemInstance(TestCase):
         room_area = 48
         camera_area = camera_side * camera_side
         expected_min_number_of_cameras = room_area / camera_area
-        expected_inside_points_len = 65
+        expected_inside_points_len = 33
         config = {
             "camera_side": camera_side,
             "room": [

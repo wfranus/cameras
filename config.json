@@ -34,9 +34,9 @@
   "alpha": 10,
   "beta": 1,
   "r_min": 1,
-  "num_iterations": 1,
-  "num_updates" : 1,
+  "num_iterations": 2,
+  "num_updates" : 2,
   "camera_move_method": "local",
-  "camera_side" : 8,
+  "camera_side" : 4,
   "r_count_method": "average"
 }

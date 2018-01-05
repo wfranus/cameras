@@ -29,10 +29,14 @@ Jak optymalnie rozmieścić kamery monitoringu w ustalonym pomieszczeniu (rzut z
 \section{Założenia}
 \begin{enumerate}
 
-\item Pomieszczenie jest wielokątem zawierającym tylko kąty o mierze 90 lub 270 stopni. Pomieszczenie reprezentowane jest przez zbiór punktów (z I ćwiartki układu współrzędnych) podanych w formie listy. Połączenie tych punktów linią, zgodnie z ich kolejnością na liście, skutkuje otrzymaniem linii łamanej ograniczającej pomieszczenie.
-\item Kamery mają jednakowy zasięg reprezentowany przez kwadrat o parametryzowanej długości
-boku. Współrzędne kamery są jednocześnie współrzędnymi środka tego kwadratu. Kamera musi znajdować się wewnątrz pomieszczenia i nie przenika przez ściany.
+\item Pomieszczenie jest wielokątem zawierającym tylko kąty o mierze 90 lub 270 stopni. 
+Pomieszczenie reprezentowane jest przez zbiór punktów (z I ćwiartki układu współrzędnych) podanych w formie listy. 
+Połączenie tych punktów linią, zgodnie z ich kolejnością na liście, skutkuje otrzymaniem linii łamanej ograniczającej pomieszczenie.
+\item Kamery mają jednakowy zasięg reprezentowany przez kwadrat o parametryzowanej długości boku. 
+Współrzędne kamery są jednocześnie współrzędnymi środka tego kwadratu. 
+Kamera musi znajdować się wewnątrz pomieszczenia i nie przenika przez ściany.
 \item Wnętrze pomieszczenia zdyskretyzowane jest do zbioru punktów o współrzędnych całkowitych poprzez nałożenie siatki o parametryzowanej gęstości.
+\item Punkty leżące na krawędziach wielokąta opisującego pomieszczenie nie należą do jego wnętrza.
 \end{enumerate}
 
 \section{Przestrzeń przeszukiwań}

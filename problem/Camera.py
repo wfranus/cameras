@@ -3,6 +3,8 @@ from matplotlib import path
 import numpy as np
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
+from shapely.geometry import LineString
+from shapely.geometry import Point
 
 
 class Camera:
@@ -48,22 +50,11 @@ class Camera:
             if rect.contains_point(np_point, radius=-0.1):
                 covered_points.append(point)
 
-        #print("Camera ({}, {}) points: {}".format(self.x, self.y, covered_points))
-
-        # in_points_x = []
-        # in_points_y = []
-        # for point in covered_points:
-        #     in_points_x.append(point[0])
-        #     in_points_y.append(point[1])
-        #
-        # fig = plt.figure()
-        # ax = fig.add_subplot(111)
-        # patch = patches.PathPatch(self.problem.room_path, facecolor='orange', lw=1, zorder=1)
-        # ax.add_patch(patch)
-        # # auto adjust plot axis range
-        # ax.set_xlim(-1, 10)
-        # ax.set_ylim(-1, 10)
-        # plt.scatter(in_points_x, in_points_y, s=10, zorder=2)
-        # plt.show()
-
+        # filter points
+        covered_points = [p for p in covered_points if not self.behindWall(p)]
         return covered_points
+
+    def behindWall(self, point):
+        ray = LineString([(self.x, self.y), point])
+        intersection = ray.intersection(self.problem.walls)
+        return not intersection.is_empty

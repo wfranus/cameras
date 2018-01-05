@@ -1,5 +1,5 @@
 from matplotlib import path
-
+from shapely.geometry import LineString
 import numpy as np
 import math
 
@@ -12,7 +12,8 @@ class ProblemInstance:
             self.r_min = config_validator.getIntegerParameter('r_min', 1)
             self.alpha = config_validator.getDoubleParameter('alpha', 1.0)
             self.beta = config_validator.getDoubleParameter('beta', 1.0)
-            self.room_path, self.room_points = ProblemInstance.loadRoomFromConfig(config_validator.getParameter('room'))
+            self.room_path, self.room_points, self.walls = \
+                ProblemInstance.loadRoomFromConfig(config_validator.getParameter('room'))
             self.min_number_of_cams = self.calculateMinNumberOfCams()
             self.bbox_points = self.calculateBoundingBox()
             self.inside_points = self.calculateInsidePoints(self.bbox_points)
@@ -28,13 +29,15 @@ class ProblemInstance:
             y = vertex['y']
             point = (x, y)
             points.append(point)
+
+        walls = LineString(points)
         room_path = path.Path(points, closed=True)
-        return room_path, points
+        return room_path, points, walls
 
     def calculateInsidePoints(self, bbox):
         inside_points = []
         for point in bbox:
-            if self.room_path.contains_point(point, radius=-0.1):
+            if self.room_path.contains_point(point, radius=0.1):
                 inside_points.append((point[0], point[1]))
 
         return inside_points
