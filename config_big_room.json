@@ -38,5 +38,6 @@
   "num_updates" : 1,
   "camera_move_method": "local",
   "camera_side" : 8,
-  "r_count_method": "average"
+  "r_count_method": "average",
+  "density" : 2
 }

@@ -15,7 +15,8 @@ class ProblemInstance:
             self.room_path, self.room_points, self.walls = \
                 ProblemInstance.loadRoomFromConfig(config_validator.getParameter('room'))
             self.min_number_of_cams = self.calculateMinNumberOfCams()
-            self.bbox_points = self.calculateBoundingBox()
+            self.density = self.config_validator.getDoubleParameter('density', 1.0)
+            self.bbox_points = self.calculateBoundingBox(self.density)
             self.inside_points = self.calculateInsidePoints(self.bbox_points)
         except KeyError as e:
             print("Error: Option {} is missing in config file".format(e))
@@ -42,13 +43,13 @@ class ProblemInstance:
 
         return inside_points
 
-    def calculateBoundingBox(self):
+    def calculateBoundingBox(self, step):
         # get bounding box of room
         bbox = path.get_paths_extents([self.room_path])
         (width, height) = bbox.size
 
         # get all points inside bbox
-        x, y = np.meshgrid(np.arange(width+1), np.arange(height+1))
+        x, y = np.meshgrid(np.arange(0, width+1, step), np.arange(0, height+1, step))
         x, y = x.flatten(), y.flatten()
         return np.vstack((x, y)).T
 
