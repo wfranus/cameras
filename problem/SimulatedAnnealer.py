@@ -12,6 +12,7 @@ class SimulatedAnnealer(Annealer):
         self.problem = problem
         self.costs = []
         self.state = State(self.problem)
+        self.best_state = self.state
         self.camera_move_method = config_validator.getParameter('camera_move_method', ['local', 'random'], 'local')
         self.r_count_method = config_validator.getParameter('r_count_method', ['average', 'max'], 'average')
 
@@ -49,6 +50,9 @@ class SimulatedAnnealer(Annealer):
         self.state.coverage_energy = coverage_energy
         self.state.camera_cost = camera_cost
         self.state.redundancy_cost = redundancy_cost
+
+        if energy < self.best_state.energy:
+            self.best_state = self.state
 
         return energy
 

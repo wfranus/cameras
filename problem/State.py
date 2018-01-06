@@ -1,5 +1,4 @@
-import random
-import copy
+import random, sys, copy
 from problem.Camera import Camera
 
 
@@ -8,7 +7,7 @@ class State:
         self.problem = problem
         self.cameras = []
         self.cameras = cameras if cameras is not None else self.generateCameras()
-        self.energy = None
+        self.energy = sys.maxsize
         self.coverage_energy = None
         self.camera_cost = None
         self.redundancy_cost = None

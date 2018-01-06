@@ -48,6 +48,7 @@ if __name__ == '__main__':
         sa.anneal()
         all_costs.append(sa.costs)
         PlotCreator.createCostPlot(os.path.join(it_path, 'costs'), sa.costs)
+        PlotCreator.createStatePlot(os.path.join(it_path, 'best_state'), sa.best_state)
 
     shutil.copy(filename, out_path)
     average_cost = numpy.mean(numpy.array(all_costs), axis=0)
