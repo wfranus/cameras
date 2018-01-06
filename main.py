@@ -5,6 +5,7 @@ from problem.SimulatedAnnealer import SimulatedAnnealer
 from problem.ConfigValidator import ConfigValidator
 from problem.PlotCreator import PlotCreator
 import numpy
+import shutil
 
 
 if __name__ == '__main__':
@@ -48,5 +49,6 @@ if __name__ == '__main__':
         all_costs.append(sa.costs)
         PlotCreator.createCostPlot(os.path.join(it_path, 'costs'), sa.costs)
 
+    shutil.copy(filename, out_path)
     average_cost = numpy.mean(numpy.array(all_costs), axis=0)
     PlotCreator.createCostPlot(os.path.join(out_path, 'average_costs'), average_cost)
