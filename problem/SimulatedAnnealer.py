@@ -17,8 +17,8 @@ class SimulatedAnnealer(Annealer):
         self.r_count_method = config_validator.getParameter('r_count_method', ['average', 'max'], 'average')
 
         try:
-            self.temp_max = config_validator.getIntegerParameter('t_max', 5000)
-            self.temp_min = config_validator.getIntegerParameter('t_min', 50)
+            self.Tmax = config_validator.getIntegerParameter('t_max', 5000)
+            self.Tmin = config_validator.getIntegerParameter('t_min', 50)
             self.steps = config_validator.getIntegerParameter('num_iterations', 100)
             self.updates = config_validator.getIntegerParameter('num_updates', 10)
             self.update_counter = 0
