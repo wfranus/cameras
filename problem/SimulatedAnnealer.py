@@ -1,3 +1,4 @@
+import os
 from simanneal import Annealer
 from problem.State import State
 from problem.PlotCreator import PlotCreator
@@ -5,7 +6,8 @@ from problem.PlotCreator import PlotCreator
 
 class SimulatedAnnealer(Annealer):
 
-    def __init__(self, problem, config_validator):
+    def __init__(self, problem, config_validator, out_path=None):
+        self.out_path = out_path
         self.config_validator = config_validator
         self.problem = problem
         self.costs = []
@@ -58,7 +60,8 @@ class SimulatedAnnealer(Annealer):
         print("camera_cost:     ", self.state.camera_cost)
         print("redundancy_cost: ", self.state.redundancy_cost)
 
-        PlotCreator.createStatePlot("out/state_" + str(self.update_counter), self.state, room_only=False)
+        plot_path = os.path.join(self.out_path, 'state_' + str(self.update_counter))
+        PlotCreator.createStatePlot(plot_path, self.state, room_only=False)
         self.update_counter += 1
 
     def getCoverage(self):

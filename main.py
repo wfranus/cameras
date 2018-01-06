@@ -1,4 +1,4 @@
-import json
+import json, os, time
 from optparse import OptionParser
 from problem.ProblemInstance import ProblemInstance
 from problem.SimulatedAnnealer import SimulatedAnnealer
@@ -23,9 +23,18 @@ if __name__ == '__main__':
     with open(filename) as config_file:
         config = json.load(config_file)
 
-    # define problem and perform algorithm
+    # define problem
     config_validator = ConfigValidator(config)
     problem = ProblemInstance(config_validator)
-    sa = SimulatedAnnealer(problem, config_validator)
+
+    # create output dir
+    now = time.strftime("%Y_%m_%d_%H_%M_%S")
+    out_path = os.path.join(os.getcwd(), 'out', now)
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
+
+    # create and start annealer
+    sa = SimulatedAnnealer(problem, config_validator, out_path)
     sa.anneal()
-    PlotCreator.createCostPlot("out/costs", sa.costs)
+
+    PlotCreator.createCostPlot(os.path.join(out_path, 'costs'), sa.costs)
