@@ -4,6 +4,7 @@ from problem.ProblemInstance import ProblemInstance
 from problem.SimulatedAnnealer import SimulatedAnnealer
 from problem.ConfigValidator import ConfigValidator
 from problem.PlotCreator import PlotCreator
+import numpy
 
 
 if __name__ == '__main__':
@@ -12,6 +13,9 @@ if __name__ == '__main__':
     parser.add_option('-F', '--config', action='store',
                       dest='configFile', default='config.json',
                       help='Json file with configuration')
+    parser.add_option('-i', '--iterations', action='store',
+                      dest='iterations', default=1, type='int',
+                      help='Number of experiments')
     (options, args) = parser.parse_args()
 
     # check config file
@@ -34,7 +38,15 @@ if __name__ == '__main__':
         os.makedirs(out_path)
 
     # create and start annealer
-    sa = SimulatedAnnealer(problem, config_validator, out_path)
-    sa.anneal()
+    all_costs = []
+    for i in range(options.iterations):
+        it_path = os.path.join(out_path, str(i))
+        if not os.path.exists(it_path):
+            os.makedirs(it_path)
+        sa = SimulatedAnnealer(problem, config_validator, it_path)
+        sa.anneal()
+        all_costs.append(sa.costs)
+        PlotCreator.createCostPlot(os.path.join(it_path, 'costs'), sa.costs)
 
-    PlotCreator.createCostPlot(os.path.join(out_path, 'costs'), sa.costs)
+    average_cost = numpy.mean(numpy.array(all_costs), axis=0)
+    PlotCreator.createCostPlot(os.path.join(out_path, 'average_costs'), average_cost)
