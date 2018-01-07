@@ -6,7 +6,7 @@ class ConfigValidator:
     def getIntegerParameter(self, parameter, default_value=None):
         value = self.config.get(parameter, default_value)
         print(value)
-        if not ConfigValidator.isInteger(value) or value <= 0:
+        if not ConfigValidator.isInteger(value) or value < 0:
             ConfigValidator.raiseError(parameter, value)
         return value
 
@@ -29,8 +29,7 @@ class ConfigValidator:
 
     @staticmethod
     def raiseError(parameter, value):
-        print("Wrong parameter: {} got value: {} ", parameter, value)
-        raise RuntimeError
+        raise RuntimeError("Wrong parameter: {} got value: {} ", parameter, value)
 
     @staticmethod
     def isFloat(var):
