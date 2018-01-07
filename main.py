@@ -38,6 +38,7 @@ if __name__ == '__main__':
     if not os.path.exists(out_path):
         os.makedirs(out_path)
 
+    shutil.copy(filename, out_path)
     # create and start annealer
     all_costs = []
     for i in range(options.iterations):
@@ -50,6 +51,5 @@ if __name__ == '__main__':
         PlotCreator.createCostPlot(os.path.join(it_path, 'costs'), sa.costs)
         PlotCreator.createStatePlot(os.path.join(it_path, 'best_state'), sa.best_state)
 
-    shutil.copy(filename, out_path)
     average_cost = numpy.mean(numpy.array(all_costs), axis=0)
     PlotCreator.createCostPlot(os.path.join(out_path, 'average_costs'), average_cost)
