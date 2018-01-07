@@ -13,7 +13,21 @@
 \usepackage{subcaption}
 \usepackage{floatrow}
 \usepackage{float}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{verbatim}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+\newcommand{\ImgPath}{./img/}
+%\Figure{filename}{caption}{label}.
+%\Figure{scrum-framework.png}{Zasada działania młyna.}{fig:scrum}
+\newcommand\Figure[4][width=\linewidth]{%
+  \begin{figure} [h!]
+    \centering
+    \includegraphics[#1]{\ImgPath /#2}
+    \caption{#3}\label{#4}
+  \end{figure}
+}
 
 \title{Rozmieszczanie kamer bezpieczeństwa}
 \author{Wiktor Franus \\ Grzegorz Staniszewski}
@@ -32,6 +46,8 @@ Jak optymalnie rozmieścić kamery monitoringu w ustalonym pomieszczeniu (rzut z
 \item Pomieszczenie jest wielokątem zawierającym tylko kąty o mierze 90 lub 270 stopni. 
 Pomieszczenie reprezentowane jest przez zbiór punktów (z I ćwiartki układu współrzędnych) podanych w formie listy. 
 Połączenie tych punktów linią, zgodnie z ich kolejnością na liście, skutkuje otrzymaniem linii łamanej ograniczającej pomieszczenie.
+Punkty podawane są w kolejności zgodnej z ruchem wskazówek zegara.
+Pierwszy i ostatni punkt jest taki sami (należy domknąć pomieszczenie).
 \item Kamery mają jednakowy zasięg reprezentowany przez kwadrat o parametryzowanej długości boku. 
 Współrzędne kamery są jednocześnie współrzędnymi środka tego kwadratu. 
 Kamera musi znajdować się wewnątrz pomieszczenia i nie przenika przez ściany.
@@ -54,7 +70,7 @@ Kamera musi znajdować się wewnątrz pomieszczenia i nie przenika przez ściany
 		\begin{itemize}
 		\item zmiana współrzędnych x lub y jednej z kamer o 1 jednostkę,
 		\item przeniesienie jednej z kamer do innego punktu z wnętrza pomieszczenia
-		wylosowanego zgodnie z rozkładem normalnym,
+		wylosowanego zgodnie z rozkładem jednostajnym,
 		\end{itemize}
 		\item dodanie nowej kamery w losowym miejscu (rozkład jednostajny),
 		\item usunięcie jednej kamery.
@@ -131,5 +147,67 @@ Przeprowadzona zostanie seria eksperymentów z różnymi wartościami parametró
 wartością początkową. Ponadto sprawdzimy dwa podejścia do zmiany położenia kamery oraz dwa sposoby obliczania parametru $r$ funkcji celu. Dla wybranej
 instancji zadania sprawdzimy też wpływ gęstości siatki punktów z wnętrza
 pomieszczenia na zachowanie metaheurystyki. Sporządzone zostaną wykresy przedstawiające wartość funkcji celu oraz liczbę użytych kamer w zależności od liczby wykonanych iteracji. 
+
+\section{Implementacja}
+Do realizacji zadania wykorzystaliśmy gotową implementację metaheurystyki zawartą w pakiecie simanneal w wersji 0.4.1,
+której dokumentacja jest dostępna pod adresem \url{https://github.com/perrygeo/simanneal}.
+Biblioteka implementuje algorytm symulowanego wyżarzania z wykładniczą funkcją.
+
+\subsection{Plik konfiguracyjny}
+\subsection{Sposób uruchomienia}
+
+\section{Badania}
+\subsection{Badanie 1}
+\begin{lstlisting}
+  "t_max": 250.0,
+  "t_min": 2.5,
+  "alpha": 10,
+  "beta": 1,
+  "r_min": 1,
+  "num_iterations": 10000,
+  "num_updates" : 100,
+  "camera_move_method": "local",
+  "camera_side" : 20,
+  "r_count_method": "average",
+  "density" : 4
+\end{lstlisting}
+\Figure[scale=0.4]{1/best_state.png}{Obliczony układ kamer w pomieszczeniu przez algorytm.}{label}
+\Figure[scale=0.4]{1/average_costs.png}{.}{label}
+zalezy nam na jak najwiekszym pokryciu, nie boli nas uzywanie kamer, dlatego jest ich duze zageszczenie.
+
+\subsection{Badanie 2}
+\begin{lstlisting}
+  "t_max": 50.0,
+  "t_min": 2.5,
+  "alpha": 10,
+  "beta": 1,
+  "r_min": 1,
+  "num_iterations": 10000,
+  "num_updates" : 100,
+  "camera_move_method": "local",
+  "camera_side" : 20,
+  "r_count_method": "average",
+  "density" : 4
+\end{lstlisting}
+Zostało 
+
+\subsection{Badanie 3}
+
+\begin{lstlisting}
+  "t_max": 50.0,
+  "t_min": 2.5,
+  "alpha": 10,
+  "beta": 1,
+  "r_min": 1,
+  "num_iterations": 10000,
+  "num_updates" : 100,
+  "camera_move_method": "random",
+  "camera_side" : 20,
+  "r_count_method": "average",
+  "density" : 4
+\end{lstlisting}
+\Figure[scale=0.4]{3/best_state.png}{Obliczony układ kamer w pomieszczeniu przez algorytm.}{label}
+\Figure[scale=0.4]{3/average_costs.png}{.}{label}
+
 
 \end{document}
