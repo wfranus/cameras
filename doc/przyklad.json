@@ -1,0 +1,40 @@
+{
+  "room": [               // Pomieszczenie opisane jako lista wierzchołków,
+    {                     // zgodnie z założeniami:
+      "x": 0.0,           // * punkty podawane są w kolejności 
+      "y": 0.0            //   zgodnej z ruchem wskazówek zegara,
+    },                    // * Pomieszczenie jest wielokątem zawierającym
+    {                     //   tylko kąty o mierze 90 lub 270 stopni,
+      "x": 0.0,
+      "y": 4.0
+    },
+    {
+      "x": 4.0,
+      "y": 4.0
+    },
+    {
+      "x": 4.0,
+      "y": 0.0
+    },
+    {                     // * ostatni punkt musi domykać pomieszczenie
+      "x": 0.0,           // pokrywać się z pierwszym na liście.
+      "y": 0.0
+    }
+  ],
+  "t_max": 2500.0,        // Temperatura maksymalna
+  "t_min": 2.5,           // Temperatura minimalna
+  "alpha": 10,            // Zysk z pokrywania powierzchni pomieszczenia
+  "beta": 1,              // Koszt użycia nadmiarowej kamery
+  "r_min": 1,             // Minimalna liczba kamer 
+                          //   pokrywająca każde miejsce w pomieszczeniu
+  "num_iterations": 10,   // Liczba iteracji
+  "num_updates" : 1,      // Liczba wyników pośrednich (nie ma wpływu na wyniki)
+  "camera_move_method": "local",    // Sposób przesuwania kamery:
+                                    //     local - o 1 jednostkę w dowolnym kierunku
+                                    //     random - w dowolne miejsce w pomieszczeniu
+  "camera_side" : 4,                // Długość boku kamery
+  "r_count_method": "average",      // Sposób wyznaczania niespełnienia redundancji:
+                                    //     average - średni stopień
+                                    //     max - maksymalne
+  "density" : 1                     // Odległość pomiędzy puktami (gęstość)
+}
