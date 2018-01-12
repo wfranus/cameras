@@ -1,7 +1,7 @@
 import unittest, random
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
-from problem.State import State
+from src.State import State
 
 
 class TestState(TestCase):
@@ -10,7 +10,7 @@ class TestState(TestCase):
         super(TestState, self).setUp()
 
         # mock Camera __init__ method for all tests
-        camera_patch = patch('problem.Camera.Camera.__init__')
+        camera_patch = patch('src.Camera.Camera.__init__')
         camera_mock = camera_patch.start()
         camera_mock.return_value = None
         self.addCleanup(camera_patch.stop)

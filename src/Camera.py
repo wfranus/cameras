@@ -1,10 +1,7 @@
 import random
 from matplotlib import path
 import numpy as np
-import matplotlib.patches as patches
-import matplotlib.pyplot as plt
 from shapely.geometry import LineString
-from shapely.geometry import Point
 
 
 class Camera:
