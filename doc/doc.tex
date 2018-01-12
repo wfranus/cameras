@@ -20,7 +20,7 @@
 
 \newcommand{\ImgPath}{./img/}
 %\Figure{filename}{caption}{label}.
-%\Figure{scrum-framework.png}{Zasada działania młyna.}{fig:scrum}
+%\Figure{sciezka-do-pliku.png}{Opis opis}{labelka}
 \newcommand\Figure[4][width=\linewidth]{%
   \begin{figure} [h!]
     \centering
@@ -151,9 +151,28 @@ pomieszczenia na zachowanie metaheurystyki. Sporządzone zostaną wykresy przeds
 \section{Implementacja}
 Do realizacji zadania wykorzystaliśmy gotową implementację metaheurystyki zawartą w pakiecie simanneal w wersji 0.4.1,
 której dokumentacja jest dostępna pod adresem \url{https://github.com/perrygeo/simanneal}.
-Biblioteka implementuje algorytm symulowanego wyżarzania z wykładniczą funkcją.
+Biblioteka implementuje algorytm symulowanego wyżarzania z wykładniczą funkcją wygaszania temperatury minimalizujący zadaną
+funkcję celu. Z racji, że naszym zadaniem miało być maksymalizowanie opisanej w specyfikacji funkcji celu, musieliśmy zmodyfikować tę
+funkcję, zmieniając jej znak na przeciwny. Poprawiony wzór na funkcję celu ma postać:
+$$f(p, k, r) = - (\alpha * p - \beta * k - \frac{1}{r_{min}} * r) $$ 
+Biblioteka simanneal udostępnia użytkownikowi 3 parametry, którymi można sterować zachowaniem metaheurystyki:
+\begin{itemize}
+\item \emph{steps} - liczba iteracji algorytmu, domyślnie 50000,
+\item \emph{Tmax} - początkowa wartość temperatury, domyślnie 25000,
+\item \emph{Tmin} - końcowa wartość temperatury, domyślnie 2.5.
+\end{itemize}
+Początkowo sprawdziliśmy zachowanie metaheurystyki dla domyślnych wartości udostepnionych parametrów, jednak
+okazały się one nietrafione. 
+Zmniejszyliśmy zatem temperaturę początkową 100-krotnie, czyli do wartości 250. 
+W rezultacie na wykresie wartości funkcji celu względem numeru iteracji zaczęły pojawiać się charakterystyczne 
+dla symulowanego wyżarzania ,,skoki'', których nasilenie zmniejszało się z kolejnymi iteracjami. 
+Zaobserwowaliśmy także, że zmniejszenie liczby iteracji 2-krotnie, czyli do wartości 25000, 
+nie wpłynęło na uzyskiwane rezultaty, ale za to zgodnie z intuicją zmniejszył się czas obliczeń. 
+Badania postanowiliśmy zatem przeprowadzać na 25000 iteracjach.
 
 \subsection{Plik konfiguracyjny}
+Przykładowy plik konfiguracyjny wraz z komentarzami znajduje się poniżej.
+
 \subsection{Sposób uruchomienia}
 
 \section{Badania}
