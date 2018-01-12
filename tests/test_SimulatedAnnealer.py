@@ -1,7 +1,8 @@
 import unittest, random
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
-from problem.SimulatedAnnealer import SimulatedAnnealer
+from src.SimulatedAnnealer import SimulatedAnnealer
+import sys
 
 
 class TestState(TestCase):
@@ -11,10 +12,10 @@ class TestState(TestCase):
 
         # create mocks
         patches = {
-            'problem': 'problem.ProblemInstance.ProblemInstance.__init__',
-            'state': 'problem.State.State.__init__',
-            'camera': 'problem.Camera.Camera.__init__',
-            'config': 'problem.ConfigValidator.ConfigValidator.__init__'
+            'problem': 'src.ProblemInstance.ProblemInstance.__init__',
+            'state': 'src.State.State.__init__',
+            'camera': 'src.Camera.Camera.__init__',
+            'config': 'src.ConfigValidator.ConfigValidator.__init__'
         }
         self.applied_patches = dict([(n, patch(p)) for n, p in patches.items()])
         self.mocks = dict([(n, p.start()) for n, p in self.applied_patches.items()])
@@ -25,6 +26,9 @@ class TestState(TestCase):
 
     def testEnergy(self):
         sa = SimulatedAnnealer(self.mocks['problem'], self.mocks['config'])
+        best_state = self.mocks['state']
+        best_state.energy = sys.maxsize
+        sa.best_state = best_state
         sa.getCoverage = MagicMock(return_value=0.5)
         sa.getCameraCostRatio = MagicMock(return_value=0.2)
         sa.getRedundancyParameter = MagicMock(return_value=0.1)

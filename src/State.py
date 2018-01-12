@@ -1,5 +1,5 @@
 import random, sys, copy
-from problem.Camera import Camera
+from src.Camera import Camera
 
 
 class State:

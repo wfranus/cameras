@@ -1,7 +1,7 @@
 import os
 from simanneal import Annealer
-from problem.State import State
-from problem.PlotCreator import PlotCreator
+from src.State import State
+from src.PlotCreator import PlotCreator
 
 
 class SimulatedAnnealer(Annealer):

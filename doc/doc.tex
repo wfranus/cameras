@@ -81,9 +81,9 @@ Kamera musi znajdować się wewnątrz pomieszczenia i nie przenika przez ściany
 
 \section{Funkcja celu}
 Informacje znane dla danej instancji problemu: \\
-$n_{kmin}$ - minimalna teoretyczna liczba kamer wymagana do pokrycia danego pomieszczenia
-(obliczana jako stosunek pola powierzchni pomieszczenia do pola powierzchni zasięgu jednej kamery, zaokrąglany do jedności w górę),\\
 $X$ - zbiór punktów reprezentujących wnętrze pomieszczenia. \\
+$n_{kmin}$ - minimalna teoretyczna liczba kamer wymagana do pokrycia danego pomieszczenia
+(obliczana jako stosunek liczności zbioru $X$ do liczby punktów pokrywanych przez 1 kamerę, zaokrąglany do jedności w górę),\\
 %
 \newline
 Parametry funkcji celu: \\
@@ -95,7 +95,7 @@ $r_{min}$ - minimalna liczba kamer pokrywająca każde miejsce w pomieszczeniu. 
 Zadanie polega na maksymalizacji funkcji: \\
 $$f(p, k, r) = \alpha * p - \beta * k - \frac{1}{r_{min}} * r $$ 
 gdzie: \\
-$p$ - stosunek powierzchni pokrytej przez kamery do powierzchni pomieszczenia \\
+$p$ - stosunek liczby punktów pokrytych przez kamery do liczności zbioru $X$\\
 $k$ - stosunek nadwyżki liczby kamer do $n_{kmin}$, obliczany wg. wzoru: \\
 \indent $k = \frac{max(0, n_k - n_{kmin})}{n_{kmin}}$, gdzie $n_k$ - liczba kamer w aktualnym stanie \\\\
 Parametr $r$ może być obliczany na dwa sposoby (sposób ustalany jest na
@@ -106,13 +106,13 @@ początku zadania):
 $ - liczba kamer pokrywających punkt $x$
 \item jako maksymalne niespełnienie warunku redundancji spośród wszystkich
 punktów z wnętrza pomieszczenia, wg. wzoru:\\
-$r = max(0, r_{min} - r_x)$, gdzie $r_x$ - liczba kamer pokrywających punkt $x$ będący najsłabiej pokrytym punktem.
+$r = max(0, r_{min} - r_x)$, gdzie $r_x$ - liczba kamer pokrywających punkt $x$, który jest najsłabiej pokrytym punktem.
 \end{itemize}
 
 %
 \section{Przykład}
 \begin{center}
-	\includegraphics[scale=0.6]{img/example.png}
+	\includegraphics[scale=0.5]{img/example_2.png}
 \end{center}
 
 
@@ -122,20 +122,22 @@ $r = max(0, r_{min} - r_x)$, gdzie $r_x$ - liczba kamer pokrywających punkt $x$
 	$\beta = 1$\\
 	$r_{min} = 1$
 	\item Informacje obliczone dla powyższego pomieszczenia:\\
-	pole powierzchni pomieszczenia: 80\\
-	$n_{kmin} = \frac{80}{2*2} = 20$\\
-	$|X| = 105$
+	Rozmiar boku kwadratu reprezentującego zasięg kamery: 2\\
+	Liczba punktów pokrywanych przez jedną kamerę: 9\\
+	$|X| = 57$\\
+	$n_{kmin} = \ceil{\frac{57}{9}} = 7$\\
+
 	\item Obliczenie wartości funkcji celu dla stanu z rysunku:\\
 	Liczba kamer użytych: 6\\
-	Pole powierzchni pokryte przez kamery: 18\\
-	$p = \frac{18}{80} = 0.225$\\
-	$k = \frac{max(0, 6-20)}{20} = \frac{0}{20} = 0$\\
-	Parametr $r$ obliczany pierwszym sposobem:
-	$r = \frac{44*0 + 61*1}{105} = \frac{61}{105} = 0.58$\\
-	$f(p, k, r) = 1*0.225 - 1*0 - 1*0.58 = -0.355$\\\\
-	Parametr $r$ obliczany drugim sposobem:
-	$r = 1-0 = 1$\\
-	$f(p, k, r) = 1*0.225 - 1*0 - 1*1 = -0.775$
+	Liczba punktów pokrytych przez kamery: 45\\
+	$p = \frac{45}{57} = 0.7895$\\
+	$k = \frac{max(0, 6-7)}{7} = \frac{0}{20} = 0$\\
+	Parametr $r$ obliczany pierwszym sposobem:\\
+	$r = \frac{45*0 + 12*1}{57} = \frac{12}{57} = 0.2105$\\
+	$f(p, k, r) = 1*0.7895 - 1*0 - 1*0.2105 = 0.5790$\\\\
+	Parametr $r$ obliczany drugim sposobem:\\
+	$r = max(0, 1-0) = 1$\\
+	$f(p, k, r) = 1*0.7895 - 1*0 - 1*1 = -0.2105$
 \end{itemize}
 
 \section{Metaheurystyka}
@@ -219,6 +221,38 @@ Przykładowy plik konfiguracyjny wraz z komentarzami znajduje się poniżej.
 }
 
 \subsection{Sposób uruchomienia}
+Program wymaga do działania Pythona w wersji 3.x.
+Przed uruchomieniem programu należy zainstalować wymagane pakiety języka Python
+znajdujące się w pliku \texttt{pip.requirements}. Można to zrobić poleceniem:\\
+\texttt{pip3 install -r pip.requirements}\\\\
+Opis parametrów uruchomienia dostepny jest po wpisaniu polecenia:\\
+\texttt{python3 main.py -{}-help}
+\begin{verbatim}
+Usage: main.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -f CONFIGFILE, --config=CONFIGFILE
+                        Json file with configuration
+  -e EXPERIMENTS, --experiments=EXPERIMENTS
+                        Number of experiments
+\end{verbatim}
+Domyślnie program wczytuje konfigurację z pliku o nazwie \texttt{config.json},
+a liczba badań wynosi 1. Wyniki badań zapisywane są w katalogu
+\texttt{./out/<data>}. W wyjściowym katalogu tworzone są podkatalogi dla
+każdej iteracji programu (eksperymentu). Każdy podkatalog zawiera wykres
+przedstawiający wartości funkcji celu względem liczby iteracji. Wykres zapisany
+jest w pliku o nazwie \texttt{costs.png}. W tym samym podkatalogu znajdują
+się także pliki graficzne przedstawiające stan pomieszczenia w wybranych,
+równomiernie rozłożonych punktach czasowych. Liczbę tych punktów można
+określić zmieniając wartość parametru \emph{num\_updates} w pliku konfiguracyjnym.
+Dodatkowo w pliku \texttt{best\_state.png} zapisany jest także wygląd stanu,
+w którym wartość funkcji celu była minimalna.
+W pliku \texttt{./out/<data>/average\_costs.png} znajduje się wykres przedstawiający
+średnią wartość funkcji celu dla wszystkich iteracji (eksperymentów).
+Ponadto do katalogu wyjściowego kopiowany jest plik konfiguracyjny użyty w danym
+uruchomieniu programu.
+
 
 \section{Badania}
 \subsection{Badanie 1}
