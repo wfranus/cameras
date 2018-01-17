@@ -490,7 +490,7 @@ rozwiązanie końcowe jest dalekie od optymalnego. Widocznych jest dużo punktó
 nie pokrytych przez żadną kamerę.
 
 
-\subsection{Wpływ parametru alfa}
+\subsection{Wpływ parametru $alpha$}
 W badaniu sprawdzaliśmy wpływ wartości parametru $alpha$ na wygląd wykresu przedstawiającego
 wartość funkcji celu dla 25000 iteracji oraz wpływ tego parametru na końcowe rozmieszczenie kamer w pomieszczeniu.
 Wartości pozostałych parametrów były stałe - zostały one zaprezentowane poniżej:
@@ -509,11 +509,15 @@ Wartości pozostałych parametrów były stałe - zostały one zaprezentowane po
 \end{lstlisting}
 
 Badanie zostało przeprowadzone dla trzech różnych wartości parametru $alpha$: 5, 50, 100 przy wymaganej redundancji równej 2 (każdy punkt ma być pokryty przez dwie kamery).
-Wykresy zostały przedstawione na rys. \ref{fig_alfa} i \ref{fig_alfa_best_state}.
+Na rys. \ref{fig_alfa} został zaprezentowany wpływ parametru $alpha$ na wartość funkcji celu. 
+Wzrost parametru skutkuje liniowym spadkiem wartości funkcji celu np. przy $alpha$ równym 5 funkcja celu waha się od -1 do -5, przy $alpha$ równym 50 funkcja celu waha się od -20 do -50, a w ostatnim przypadku od -35 do -100.
+
+Rozmieszczenie kamer w pomieszczeniu zostało zaprezentowane na rys. i \ref{fig_alfa_best_state}.
 Widoczny jest wpływ stosunku parametru $beta$ do $alpha$ na liczbę używanych kamer.
 W przypadku, gdy stosunek ten jest mały, czyli dla $beta$ równego 1 i $alpha$ równego 5, pomieszczenie nie zostaje pokryte w całości, a tym bardziej każdy punkt nie jest pokryty przez dwie kamery.
 Wzrost powyższego stosunku ($alpha$ równe 50), skutkuje wzrostem liczby kamer i wzrostem redundancji dla pojedynczego punktu.
 Przy zwiększeniu parametru do 100 widać podobną relację, jednak koszt kamery w stosunku do zysku z redundancji jest wciąż zbyt mały i w pomieszczeniu występują miejsca, w których punkty są pokryte tylko przez 1 kamerę.
+
 
 \newgeometry{left=0cm,right=0cm,top=2cm,bottom=2cm}
 \begin{figure}[htb]
