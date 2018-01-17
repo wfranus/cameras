@@ -70,14 +70,14 @@
     }
   ],
   "t_max": 50.0,
-  "t_min": 0.01,
-  "alpha": 50,
+  "t_min": 0.001,
+  "alpha": 100,
   "beta": 1,
-  "r_min": 1,
+  "r_min": 2,
   "num_iterations": 25000,
-  "num_updates" : 25000,
-  "camera_move_method": "random",
+  "num_updates" : 10,
+  "camera_move_method": "local",
   "camera_side" : 20,
-  "r_count_method": "average",
+  "r_count_method": "max",
   "density" : 4
 }
