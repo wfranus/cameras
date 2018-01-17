@@ -1,4 +1,5 @@
 \documentclass[12pt,a4paper]{article}
+\usepackage[a4paper,top=25mm,bottom=25mm,inner=18mm,outer=18mm,twoside]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -16,9 +17,16 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{verbatim}
+\usepackage{afterpage}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 
 \newcommand{\ImgPath}{./img/}
+\newcommand{\ResPath}{../badania/}
+
+\lstset{
+ basicstyle=\ttfamily\footnotesize
+}
+
 %\Figure{filename}{caption}{label}.
 %\Figure{sciezka-do-pliku.png}{Opis opis}{labelka}
 \newcommand\Figure[4][width=\linewidth]{%
@@ -255,57 +263,73 @@ uruchomieniu programu.
 
 
 \section{Badania}
-\subsection{Badanie 1}
+\subsection{Wpływ wartości temperatury początkowej funkcji wygaszania na wartość
+funkcji celu}
+W badaniu sprawdzaliśmy wpływ początkowej wartości temperatury na wygląd wykresu
+przedstawiającego wartość funkcji celu dla 25000 iteracji. Wartości pozostałych
+parametrów były stałe - zostały one zaprezentowane poniżej:
+
 \begin{lstlisting}
-  "t_max": 250.0,
-  "t_min": 2.5,
+  "t_max": <zmienna>,
+  "t_min": 0.01,
   "alpha": 10,
   "beta": 1,
   "r_min": 1,
-  "num_iterations": 10000,
-  "num_updates" : 100,
+  "num_iterations": 25000,
+  "num_updates" : 10,
   "camera_move_method": "local",
   "camera_side" : 20,
   "r_count_method": "average",
   "density" : 4
 \end{lstlisting}
-\Figure[scale=0.4]{1/best_state.png}{Obliczony układ kamer w pomieszczeniu przez algorytm.}{label}
-\Figure[scale=0.4]{1/average_costs.png}{.}{label}
-zalezy nam na jak najwiekszym pokryciu, nie boli nas uzywanie kamer, dlatego jest ich duze zageszczenie.
+\afterpage{\clearpage}
+\newgeometry{left=0cm,right=0cm,top=0cm,bottom=0cm}
+\begin{figure}[p]
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_temp_tmax/tmax_50/average_costs.png} 
+    \caption{$T_{max}$ = 50} 
+    \label{fig_tmax:a} 
+    \vspace{2ex}
+  \end{subfigure}%%
+  \begin{subfigure}[b]{0.5\linewidth}
+    %\centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_temp_tmax/tmax_250/average_costs.png} 
+    \caption{$T_{max}$ = 250} 
+    \label{fig_tmax:b} 
+    \vspace{2ex}
+  \end{subfigure} 
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_temp_tmax/tmax_2500/average_costs.png} 
+    \caption{$T_{max}$ = 2500} 
+    \label{fig_tmax:c} 
+  \end{subfigure}%%
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_temp_tmax/tmax_25000/average_costs.png} 
+    \caption{$T_{max}$ = 25000} 
+    \label{fig_tmax:d} 
+  \end{subfigure} 
+  \caption{Wpływ parametru $T_{max}$ na wartość funkcji celu.}
+  \label{fig_tmax} 
+\end{figure}
+\restoregeometry
+
+Badanie zostało przeprowadzone dla czterech różnych wartości parametru $T_{max}$:
+50, 250, 2500 i 25000. Wykresy zostały z przedstawione na rys. \ref{fig_tmax}.
+Widoczny jest wpływ parametru $T_{max}$ na długość fazy eksploracji, czyli okresu,
+w którym algorytm akceptuje rozwiązania gorsze od aktualnego. Po fazie eksploracji
+następuje faza eksploatacji, kiedy to algorytm stara się polepszyć aktualne rozwiązanie,
+coraz rzadziej pozwalając na jego pogarszanie. Dla $T_{max}$ = 50 granica zauważalna
+granica pomiędzy wspomnianymi fazami przeszukiwania umiejscowiona jest w pobliżu
+12000 iteracji, dla $T_{max}$ = 250 w pobliżu 15000 iteracji, dla $T_{max}$ = 2500
+w pobliżu 16000 iteracji, a dla $T_{max}$ = 25000 około 19000 iteracji.
 
 \subsection{Badanie 2}
-\begin{lstlisting}
-  "t_max": 50.0,
-  "t_min": 2.5,
-  "alpha": 10,
-  "beta": 1,
-  "r_min": 1,
-  "num_iterations": 10000,
-  "num_updates" : 100,
-  "camera_move_method": "local",
-  "camera_side" : 20,
-  "r_count_method": "average",
-  "density" : 4
-\end{lstlisting}
-Zostało 
+
 
 \subsection{Badanie 3}
-
-\begin{lstlisting}
-  "t_max": 50.0,
-  "t_min": 2.5,
-  "alpha": 10,
-  "beta": 1,
-  "r_min": 1,
-  "num_iterations": 10000,
-  "num_updates" : 100,
-  "camera_move_method": "random",
-  "camera_side" : 20,
-  "r_count_method": "average",
-  "density" : 4
-\end{lstlisting}
-\Figure[scale=0.4]{3/best_state.png}{Obliczony układ kamer w pomieszczeniu przez algorytm.}{label}
-\Figure[scale=0.4]{3/average_costs.png}{.}{label}
 
 
 \end{document}
