@@ -489,4 +489,56 @@ a ich rozmieszczenie wydaje się być bardziej sensowne. Dla $beta$ = 9 zaprezen
 rozwiązanie końcowe jest dalekie od optymalnego. Widocznych jest dużo punktów
 nie pokrytych przez żadną kamerę.
 
+\subsection{Wpływ wartości parametru $camera\_move\_method$ na wartość funkcji celu}
+W badaniu sprawdzaliśmy wpływ wartości parametru $camera\_move\_method$,
+czyli sposobu w jaki przesuwana jest kamera, na wygląd wykresu przedstawiającego wartość funkcji celu.
+Wartości pozostałych parametrów były stałe - zostały one zaprezentowane poniżej:
+
+\begin{lstlisting}
+  "t_max": 50.0,
+  "t_min": 0.001,
+  "alpha": 100,
+  "beta": 1,
+  "r_min": 1,
+  "num_iterations": 25000,
+  "num_updates" : 10,
+  "camera_move_method": "local|random",
+  "camera_side" : 20,
+  "r_count_method": "average",
+  "density" : 4
+\end{lstlisting}
+\begin{figure}[htb]
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_camera_move_method/local/average_costs.png} 
+    \caption{$camera\_move\_method$ = "local"} 
+    \label{fig_cam_move_method:a} 
+  \end{subfigure}%%
+  \begin{subfigure}[b]{0.5\linewidth}
+    %\centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_camera_move_method/random/average_costs.png} 
+    \caption{$camera\_move\_method$ = "random"} 
+    \label{fig_cam_move_method:b} 
+  \end{subfigure} 
+  \caption{Wpływ sposobu przesuwania kamery na wartość funkcji celu.}
+  \label{fig_cam_move_method} 
+\end{figure}
+Wyniki badania dla dwóch dozwolonych wartości parametru $camera\_move\_method$
+zaprezentowane zostały na rys.\ \ref{fig_cam_move_method}. Wykresy są do siebie
+podobne, jednak można zauważyć pewną różnicę w pobliżu 5000 iteracji.
+W przypadku, gdy przemieszczamy kamerę w losowe miejsce, istnieje większa
+szansa na gwałtowną zmianę wartości funkcji celu niż wtedy, gdy kamera jest
+przesuwana tylko o jedną jednostkę w dowolnym kierunku. Na wykresie objawia się
+to większymi ,,skokami'' funkcji celu. Gwałtowność zmian wartości funkcji celu
+w sąsiednich stanach spowodowana może być nie tylko zmianą położenia jednej z kamer,
+ale również dodaniem lub usunięciem kamery. Można więc założyć, że gdy
+parametr $camera\_move\_method$ ma wartość ''local'', to gwałtowną zmianę
+wartości funkcji celu w małym zakresie powodują dwa czynniki: dodanie i usunięcie
+kamery. Jeśli natomiast kamera będzie przesuwana w losowe miejsce, to samo
+przesunięcie kamery staje się trzecim czynnikiem wpływającym na występowanie
+gwałtownych zmian wartości funkcji celu. Kombinacja wartości pozostałych
+parametrów użytych w doświadczeniu sprawiła, że sama wartość parametru
+$camera\_move\_method$ nie miała wpływu na końcową wartość funkcji celu,
+która przyjęła wartość ok.\ -95.
+
 \end{document}
