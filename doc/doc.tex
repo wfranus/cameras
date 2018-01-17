@@ -326,10 +326,167 @@ granica pomiędzy wspomnianymi fazami przeszukiwania umiejscowiona jest w pobli�
 12000 iteracji, dla $T_{max}$ = 250 w pobliżu 15000 iteracji, dla $T_{max}$ = 2500
 w pobliżu 16000 iteracji, a dla $T_{max}$ = 25000 około 19000 iteracji.
 
-\subsection{Badanie 2}
+\subsection{Wpływ wartości temperatury końcowej funkcji wygaszania na wartość
+funkcji celu}
+W badaniu sprawdzaliśmy wpływ końcowej wartości temperatury na wygląd wykresu
+przedstawiającego wartość funkcji celu dla 25000 iteracji. Wartości pozostałych
+parametrów były stałe - zostały one zaprezentowane poniżej:
 
+\begin{lstlisting}
+  "t_max": 50.0,
+  "t_min": <zmienna>,
+  "alpha": 100,
+  "beta": 1,
+  "r_min": 1,
+  "num_iterations": 25000,
+  "num_updates" : 10,
+  "camera_move_method": "local",
+  "camera_side" : 20,
+  "r_count_method": "average",
+  "density" : 4
+\end{lstlisting}
+\begin{figure}[htb]
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_temp_tmin/tmin_0_001/average_costs.png} 
+    \caption{$T_{min}$ = 0.001} 
+    \label{fig_tmin:a} 
+    \vspace{2ex}
+  \end{subfigure}%%
+  \begin{subfigure}[b]{0.5\linewidth}
+    %\centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_temp_tmin/tmin_1/average_costs.png} 
+    \caption{$T_{min}$ = 1} 
+    \label{fig_tmin:b} 
+    \vspace{2ex}
+  \end{subfigure} 
+  \caption{Wpływ parametru $T_{min}$ na wartość funkcji celu.}
+  \label{fig_tmin} 
+\end{figure}
+\newpage
+Badanie zostało przeprowadzone na dwóch wartości parametru $T_{min}$
+(rys.\ \ref{fig_tmin}).
+Dla wartości 0.001 wykres wartości funkcji celu względem numeru iteracji
+jest bardziej gładki niż dla wartości 1. Temperatura ma bezpośredni wpływ na wartość
+prawdopodobieństwa akceptacji rozwiązań gorszych niż obecne. Większa wartość $T_{min}$
+implikuje większą wartość tego prawdopodobieństwa, a co za tym idzie większe oscylacje na wykresie w końcowym iteracjach.
 
-\subsection{Badanie 3}
+\subsection{Wpływ liczby iteracji na wartość funkcji celu}
+W badaniu sprawdzaliśmy wpływ liczby iteracji algorytmu symulowanego wyżarzania
+na wygląd wykresu przedstawiającego wartość funkcji celu.
+Wartości pozostałych parametrów były stałe - zostały one zaprezentowane poniżej:
 
+\begin{lstlisting}
+  "t_max": 250.0,
+  "t_min": 0.01,
+  "alpha": 10,
+  "beta": 1,
+  "r_min": 1,
+  "num_iterations": <zmienna>,
+  "num_updates" : 10,
+  "camera_move_method": "local",
+  "camera_side" : 20,
+  "r_count_method": "average",
+  "density" : 4
+\end{lstlisting}
+\begin{figure}[htb]
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_liczby_iteracji/25k_iterations/average_costs.png} 
+    \caption{25000 iteracji} 
+    \label{fig_iterations:a} 
+    \vspace{2ex}
+  \end{subfigure}%%
+  \begin{subfigure}[b]{0.5\linewidth}
+    %\centering
+    \includegraphics[width=1\linewidth]{\ResPath wplyw_liczby_iteracji/50k_iterations/average_costs.png} 
+    \caption{50000 iteracji} 
+    \label{fig_iterations:b} 
+    \vspace{2ex}
+  \end{subfigure} 
+  \caption{Wpływ liczby iteracji na wartość funkcji celu.}
+  \label{fig_iterations} 
+\end{figure}
+Wyniki badania dla 25 tyś i 50 tyś iteracji zaprezentowane zostały na rys. \ref{fig_iterations}. Wykresy są do siebie podobne, w szczególności granica między
+fazą eksploracji i eksploatacji występuje mniej więcej w tym samym miejscu, czyli
+po ok.\ 60\% iteracji. Osiągane wartości minimalne funkcji celu są w obu
+przypadkach takie same i wynoszą ok.\ -9.5. Większa liczba iteracji wpływa jednak
+negatywnie na ilość czasu potrzebną na wykonanie badania. Z tego powodu
+postanowiliśmy przeprowadzić wszystkie pozostałe badania właśnie na 25 tysiącach iteracji.
+
+\subsection{Wpływ wartości parametru $beta$ na wartość funkcji celu}
+W badaniu sprawdzaliśmy wpływ wartości parametru $beta$ na wygląd wykresu
+przedstawiającego wartość funkcji celu dla 25000 iteracji oraz wpływ tego
+parametru na końcowe rozmieszczenie kamer w pomieszczeniu. Wartości pozostałych
+parametrów były stałe - zostały one zaprezentowane poniżej:
+
+\begin{lstlisting}
+  "t_max": 200.0,
+  "t_min": 0.01,
+  "alpha": 10,
+  "beta": <zmienna>,
+  "r_min": 2,
+  "num_iterations": 25000,
+  "num_updates" : 100,
+  "camera_move_method": "local",
+  "camera_side" : 20,
+  "r_count_method": "average",
+  "density" : 4
+\end{lstlisting}
+
+\afterpage{\clearpage}
+\newgeometry{left=0cm,right=0cm,top=0cm,bottom=0cm}
+\begin{figure}[p]
+\captionsetup[subfigure]{aboveskip=-3pt,belowskip=-1pt}
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.85\linewidth]{\ResPath wplyw_beta/beta_0.5/average_costs.png}
+    \caption{Wartość funkcji celu dla $beta$ = 0.5} 
+    \label{fig_beta:a} 
+  \end{subfigure}%%
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.78\linewidth]{\ResPath wplyw_beta/beta_0.5/3/best_state.png}
+    \caption{Końcowe rozmieszczenie kamer dla $beta$ = 0.5} 
+    \label{fig_beta:b} 
+  \end{subfigure}
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.85\linewidth]{\ResPath wplyw_beta/beta_2/average_costs.png} 
+    \caption{Wartość funkcji celu dla $beta$ = 2} 
+    \label{fig_beta:c} 
+  \end{subfigure}%%
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.78\linewidth]{\ResPath wplyw_beta/beta_2/6/best_state.png} 
+    \caption{Końcowe rozmieszczenie kamer dla $beta$ = 2} 
+    \label{fig_beta:d} 
+  \end{subfigure}
+    \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.85\linewidth]{\ResPath wplyw_beta/beta_9/average_costs.png} 
+    \caption{Wartość funkcji celu dla $beta$ = 9} 
+    \label{fig_beta:c} 
+  \end{subfigure}%%
+  \begin{subfigure}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.78\linewidth]{\ResPath wplyw_beta/beta_9/0/best_state.png} 
+    \caption{Końcowe rozmieszczenie kamer dla $beta$ = 9} 
+    \label{fig_beta:d} 
+  \end{subfigure} 
+  \caption{Wpływ parametru $beta$ na wartość funkcji celu.}
+  \label{fig_beta} 
+\end{figure}
+\restoregeometry
+Badanie zostało przeprowadzone na trzech wartości parametru $beta$
+(rys.\ \ref{fig_beta}). Parametr $r_{min}$ miał stałą wartość równą 2,
+co oznacza, że każdy punkt z wnętrza pomieszczenia powinien być pokryty
+przez co najmniej dwie kamery. Niska wartość $beta$, czyli niska wartość
+kary za użycie nadmiarowej kamery sprawiła, że użytych zostało za dużo
+kamer, co widać gołym okiem na rys. \ref{fig_beta:b}. Zwiększenie wartości
+$beta$ do 2 spowodowało, że użytych zostało mniej kamer niż za pierwszym razem,
+a ich rozmieszczenie wydaje się być bardziej sensowne. Dla $beta$ = 9 zaprezentowane
+rozwiązanie końcowe jest dalekie od optymalnego. Widocznych jest dużo punktów
+nie pokrytych przez żadną kamerę.
 
 \end{document}
