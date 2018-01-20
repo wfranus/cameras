@@ -1,9 +1,9 @@
 import json, os, time
 from optparse import OptionParser
-from problem.ProblemInstance import ProblemInstance
-from problem.SimulatedAnnealer import SimulatedAnnealer
-from problem.ConfigValidator import ConfigValidator
-from problem.PlotCreator import PlotCreator
+from src.ProblemInstance import ProblemInstance
+from src.SimulatedAnnealer import SimulatedAnnealer
+from src.ConfigValidator import ConfigValidator
+from src.PlotCreator import PlotCreator
 import numpy
 import shutil
 
@@ -11,11 +11,11 @@ import shutil
 if __name__ == '__main__':
     # parse arguments
     parser = OptionParser()
-    parser.add_option('-F', '--config', action='store',
+    parser.add_option('-f', '--config', action='store',
                       dest='configFile', default='config.json',
                       help='Json file with configuration')
-    parser.add_option('-i', '--iterations', action='store',
-                      dest='iterations', default=1, type='int',
+    parser.add_option('-e', '--experiments', action='store',
+                      dest='experiments', default=1, type='int',
                       help='Number of experiments')
     (options, args) = parser.parse_args()
 
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     shutil.copy(filename, out_path)
     # create and start annealer
     all_costs = []
-    for i in range(options.iterations):
+    for i in range(options.experiments):
         it_path = os.path.join(out_path, str(i))
         if not os.path.exists(it_path):
             os.makedirs(it_path)

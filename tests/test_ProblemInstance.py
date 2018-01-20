@@ -1,7 +1,7 @@
 import unittest
 from unittest import TestCase
-from problem.ProblemInstance import ProblemInstance
-from problem.ConfigValidator import ConfigValidator
+from src.ProblemInstance import ProblemInstance
+from src.ConfigValidator import ConfigValidator
 
 
 class TestProblemInstance(TestCase):

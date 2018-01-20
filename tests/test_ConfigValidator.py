@@ -1,6 +1,6 @@
 import unittest
 from unittest import TestCase
-from problem.ConfigValidator import ConfigValidator
+from src.ConfigValidator import ConfigValidator
 
 
 class TestConfigValidator(TestCase):

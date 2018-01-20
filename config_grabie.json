@@ -69,14 +69,14 @@
       "y": 0.0
     }
   ],
-  "t_max": 250.0,
-  "t_min": 2.5,
-  "alpha": 10,
+  "t_max": 50.0,
+  "t_min": 0.01,
+  "alpha": 50,
   "beta": 1,
   "r_min": 1,
-  "num_iterations": 1000,
-  "num_updates" : 10,
-  "camera_move_method": "local",
+  "num_iterations": 25000,
+  "num_updates" : 25000,
+  "camera_move_method": "random",
   "camera_side" : 20,
   "r_count_method": "average",
   "density" : 4
