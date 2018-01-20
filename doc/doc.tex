@@ -150,7 +150,7 @@ $r = max(0, r_{min} - r_x)$, gdzie $r_x$ - liczba kamer pokrywających punkt $x$
 
 \section{Metaheurystyka}
 Element początkowy przestrzeni przeszukiwań jest zbiorem zawierającym $n_{kmin}$ kamer rozmieszczonych losowo wewnątrz pomieszczenia.\\
-Do rozwiązania problemu użyjemy algorytmu symulowanego wyżarzania. Przy odpowiednio dobranych parametrach metoda ta, w porównaniu do algorytmów wspinaczkowych, daje większą szansę na znalezienie optymalnego rozwiązania, ponieważ zmniejsza ryzyko zatrzymania się w ekstremach lokalnych. W początkowej fazie przeszukiwania przestrzeni dopuszczalne jest przechodzenie do stanów gorszych (o mniejszej wartości funkcji celu). Wraz z rosnącą liczbą iteracji obszar poszukiwań jest ograniczany, a algorytm bardziej skupia się na poprawie bieżącego rozwiązania.
+Do rozwiązania problemu użyjemy algorytmu symulowanego wyżarzania. Przy odpowiednio dobranych parametrach metoda ta, w porównaniu do algorytmów wspinaczkowych, daje większą szansę na znalezienie optymalnego rozwiązania, ponieważ zmniejsza ryzyko zatrzymania się w optimach lokalnych. W początkowej fazie przeszukiwania przestrzeni dopuszczalne jest przechodzenie do stanów gorszych (o mniejszej wartości funkcji celu). Wraz z rosnącą liczbą iteracji algorytm bardziej skupia się na poprawie bieżącego rozwiązania.
 
 \section{Przewidywane wyniki pracy}
 Przeprowadzona zostanie seria eksperymentów z różnymi wartościami parametrów $\alpha$, $\beta$, $r_{min}$ na kilku instancjach problemu (różne pomieszczenia). Dla ustalonych parametrów funkcji celu, sterować będziemy parametrami metaheurystyki, tj. funkcją wygaszania temperatury i jej
@@ -161,9 +161,9 @@ pomieszczenia na zachowanie metaheurystyki. Sporządzone zostaną wykresy przeds
 \section{Implementacja}
 Do realizacji zadania wykorzystaliśmy gotową implementację metaheurystyki zawartą w pakiecie simanneal w wersji 0.4.1,
 której dokumentacja jest dostępna pod adresem \url{https://github.com/perrygeo/simanneal}.
-Biblioteka implementuje algorytm symulowanego wyżarzania z wykładniczą funkcją wygaszania temperatury minimalizujący zadaną
+Biblioteka implementuje algorytm symulowanego wyżarzania z wykładniczą funkcją wygaszania temperatury, minimalizujący zadaną
 funkcję celu. Z racji, że naszym zadaniem miało być maksymalizowanie opisanej w specyfikacji funkcji celu, musieliśmy zmodyfikować tę
-funkcję, zmieniając jej znak na przeciwny. Poprawiony wzór na funkcję celu ma postać:
+funkcję, zmieniając jej znak na przeciwny. Poprawiony wzór funkcji celu ma postać:
 $$f(p, k, r) = - (\alpha * p - \beta * k - \frac{1}{r_{min}} * r) $$ 
 Biblioteka simanneal udostępnia użytkownikowi 3 parametry, którymi można sterować zachowaniem metaheurystyki:
 \begin{itemize}
@@ -173,11 +173,11 @@ Biblioteka simanneal udostępnia użytkownikowi 3 parametry, którymi można ste
 \end{itemize}
 Początkowo sprawdziliśmy zachowanie metaheurystyki dla domyślnych wartości udostepnionych parametrów, jednak
 okazały się one nietrafione. 
-Zmniejszyliśmy zatem temperaturę początkową 100-krotnie, czyli do wartości 250. 
+Postanowiliśmy zmniejszyć temperaturę początkową 100-krotnie, czyli do wartości 250.
 W rezultacie na wykresie wartości funkcji celu względem numeru iteracji zaczęły pojawiać się charakterystyczne 
 dla symulowanego wyżarzania ,,skoki'', których nasilenie zmniejszało się z kolejnymi iteracjami. 
 Zaobserwowaliśmy także, że zmniejszenie liczby iteracji 2-krotnie, czyli do wartości 25000, 
-nie wpłynęło na uzyskiwane rezultaty, ale za to zgodnie z intuicją zmniejszył się czas obliczeń. 
+nie wpłynęło znacząco na uzyskiwane rezultaty, ale za to, zgodnie z intuicją, skrócił się czas obliczeń.
 Badania postanowiliśmy zatem przeprowadzać na 25000 iteracjach.
 
 \subsection{Plik konfiguracyjny}
@@ -246,7 +246,7 @@ Options:
                         Number of experiments
 \end{verbatim}
 Domyślnie program wczytuje konfigurację z pliku o nazwie \texttt{config.json},
-a liczba badań wynosi 1. Wyniki badań zapisywane są w katalogu
+a liczba eksperymentów (liczba uruchomień) wynosi 1. Wyniki badań zapisywane są w katalogu
 \texttt{./out/<data>}. W wyjściowym katalogu tworzone są podkatalogi dla
 każdej iteracji programu (eksperymentu). Każdy podkatalog zawiera wykres
 przedstawiający wartości funkcji celu względem liczby iteracji. Wykres zapisany
@@ -254,7 +254,7 @@ jest w pliku o nazwie \texttt{costs.png}. W tym samym podkatalogu znajdują
 się także pliki graficzne przedstawiające stan pomieszczenia w wybranych,
 równomiernie rozłożonych punktach czasowych. Liczbę tych punktów można
 określić zmieniając wartość parametru \emph{num\_updates} w pliku konfiguracyjnym.
-Dodatkowo w pliku \texttt{best\_state.png} zapisany jest także wygląd stanu,
+Dodatkowo w pliku \texttt{best\_state.png} zapisany jest wygląd stanu (pomieszczenia),
 w którym wartość funkcji celu była minimalna.
 W pliku \texttt{./out/<data>/average\_costs.png} znajduje się wykres przedstawiający
 średnią wartość funkcji celu dla wszystkich iteracji (eksperymentów).
@@ -303,8 +303,8 @@ Wyniki badania dla 25 tyś i 50 tyś iteracji zaprezentowane zostały na rys. \r
 fazą eksploracji i eksploatacji występuje mniej więcej w tym samym miejscu, czyli
 po ok.\ 60\% iteracji. Osiągane wartości minimalne funkcji celu są w obu
 przypadkach takie same i wynoszą ok.\ -9.5. Większa liczba iteracji wpływa jednak
-negatywnie na ilość czasu potrzebną na wykonanie badania. Z tego powodu
-postanowiliśmy przeprowadzić wszystkie pozostałe badania właśnie na 25 tysiącach iteracji.
+negatywnie na ilość czasu potrzebną na wykonanie badania. Z tego powodu wszystkie
+pozostałe badania postanowiliśmy przeprowadzić na 25 tysiącach iteracji.
 
 \subsection{Wpływ wartości temperatury początkowej funkcji wygaszania na wartość
 funkcji celu}
@@ -364,7 +364,7 @@ Badanie zostało przeprowadzone dla czterech różnych wartości parametru $T_{m
 Widoczny jest wpływ parametru $T_{max}$ na długość fazy eksploracji, czyli okresu,
 w którym algorytm akceptuje rozwiązania gorsze od aktualnego. Po fazie eksploracji
 następuje faza eksploatacji, kiedy to algorytm stara się polepszyć aktualne rozwiązanie,
-coraz rzadziej pozwalając na jego pogarszanie. Dla $T_{max}$ = 50 granica zauważalna
+coraz rzadziej pozwalając na jego pogarszanie. Dla $T_{max}$ = 50
 granica pomiędzy wspomnianymi fazami przeszukiwania umiejscowiona jest w pobliżu
 12000 iteracji, dla $T_{max}$ = 250 w pobliżu 15000 iteracji, dla $T_{max}$ = 2500
 w pobliżu 16000 iteracji, a dla $T_{max}$ = 25000 około 19000 iteracji.
@@ -414,9 +414,11 @@ jest bardziej gładki niż dla wartości 1. Temperatura ma bezpośredni wpływ n
 prawdopodobieństwa akceptacji rozwiązań gorszych niż obecne. Większa wartość $T_{min}$
 implikuje większą wartość tego prawdopodobieństwa, a co za tym idzie większe oscylacje na wykresie w końcowym iteracjach.
 
-\subsection{Wpływ wartości parametru $alpha$ na wartość funkcji celu i rozmieszczenie kamer}
+\subsection{Wpływ wartości parametru $alpha$ na wartość funkcji celu i końcowe
+rozmieszczenie kamer}
 W badaniu sprawdzaliśmy wpływ wartości parametru $alpha$ na wygląd wykresu przedstawiającego
-wartość funkcji celu dla 25000 iteracji oraz wpływ tego parametru na końcowe rozmieszczenie kamer w pomieszczeniu.
+wartość funkcji celu dla 25000 iteracji oraz wpływ tego parametru na końcowe
+rozmieszczenie kamer w pomieszczeniu.
 Wartości pozostałych parametrów były stałe - zostały one zaprezentowane poniżej:
 \begin{lstlisting}
   "t_max": 250.0,
@@ -432,15 +434,20 @@ Wartości pozostałych parametrów były stałe - zostały one zaprezentowane po
   "density" : 4
 \end{lstlisting}
 
-Badanie zostało przeprowadzone dla trzech różnych wartości parametru $alpha$: 5, 50, 100 przy wymaganej redundancji równej 2 (każdy punkt ma być pokryty przez dwie kamery).
-Na rys. \ref{fig_alfa} został zaprezentowany wpływ parametru $alpha$ na wartość funkcji celu. 
-Wzrost parametru skutkuje liniowym spadkiem wartości funkcji celu np. przy $alpha$ równym 5 funkcja celu waha się od -1 do -5, przy $alpha$ równym 50 funkcja celu waha się od -20 do -50, a w ostatnim przypadku od -35 do -100.
+Badanie zostało przeprowadzone dla trzech różnych wartości parametru $alpha$: 5, 50, 100, przy wymaganej redundancji równej 2 (każdy punkt ma być pokryty przez dwie kamery).
+Rys. \ref{fig_alfa} prezentuje wyniki badania. 
+Wzrost wartości parametru $alpha$ skutkuje liniowym spadkiem wartości funkcji celu np. przy $alpha$ równym 5, wartości funkcji celu należą do przedziału od -1 do -5, przy $alpha$ równym 50 do przedziału od -20 do -50, a w ostatnim przypadku do przedziału od -35 do -100.
 
-Rozmieszczenie kamer w pomieszczeniu zostało zaprezentowane na rys. i \ref{fig_alfa_best_state}.
-Widoczny jest wpływ stosunku parametru $beta$ do $alpha$ na liczbę używanych kamer.
-W przypadku, gdy stosunek ten jest mały, czyli dla $beta$ równego 1 i $alpha$ równego 5, pomieszczenie nie zostaje pokryte w całości, a tym bardziej każdy punkt nie jest pokryty przez dwie kamery.
-Wzrost powyższego stosunku ($alpha$ równe 50), skutkuje wzrostem liczby kamer i wzrostem redundancji dla pojedynczego punktu.
-Przy zwiększeniu parametru do 100 widać podobną relację, jednak koszt kamery w stosunku do zysku z redundancji jest wciąż zbyt mały i w pomieszczeniu występują miejsca, w których punkty są pokryte tylko przez 1 kamerę.
+Rozmieszczenie kamer w pomieszczeniu zostało zaprezentowane na rys. \ref{fig_alfa_best_state}.
+Liczba używanych kamer zależna jest od stosunku wartości parametrów $beta$ i $alpha$.
+W przypadku, gdy stosunek ten jest mały, czyli dla $beta$ równego 1 i $alpha$ równego 5, pomieszczenie nie zostaje pokryte w całości, a tym bardziej każdy punkt nie jest
+pokryty przez dwie kamery.
+Zwiększenie wartości parametru $alpha$ do 50 skutkuje wzrostem liczby kamer
+i wzrostem redundancji dla pojedynczego punktu, ponieważ dodawanie kamery jest
+wtedy mało kosztowne.
+Po zwiększeniu wartości parametru $alpha$ do 100 widoczna jest podobna zależność. Można również
+zauważyć, że pomimo niskiego kosztu użycia kamery, w pomieszczeniu występują miejsca, w których punkty są pokryte tylko przez 1 kamerę. Dzieje się tak, ponieważ stosunek parametrów
+$beta$ i $r\_min$ jest w tym przypadku zbyt mały.
 
 
 \newgeometry{left=0cm,right=0cm,top=2cm,bottom=2cm}
@@ -494,12 +501,13 @@ Przy zwiększeniu parametru do 100 widać podobną relację, jednak koszt kamery
     \label{fig_alfa_best_state:c}
   \end{subfigure}%%
 
-  \caption{Wpływ parametru $alpha$ na rozmieszczenie kamer}
+  \caption{Wpływ parametru $alpha$ na końcowe rozmieszczenie kamer}
   \label{fig_alfa_best_state}
 \end{figure}
 \restoregeometry
 
-\subsection{Wpływ wartości parametru $beta$ na wartość funkcji celu i rozmieszczenie kamer}
+\subsection{Wpływ wartości parametru $beta$ na wartość funkcji celu i końcowe
+rozmieszczenie kamer}
 W badaniu sprawdzaliśmy wpływ wartości parametru $beta$ na wygląd wykresu
 przedstawiającego wartość funkcji celu dla 25000 iteracji oraz wpływ tego
 parametru na końcowe rozmieszczenie kamer w pomieszczeniu. Wartości pozostałych
@@ -559,7 +567,7 @@ parametrów były stałe - zostały one zaprezentowane poniżej:
     \caption{Końcowe rozmieszczenie kamer dla $beta$ = 9}
     \label{fig_beta:d}
   \end{subfigure}
-  \caption{Wpływ parametru $beta$ na wartość funkcji celu.}
+  \caption{Wpływ parametru $beta$ na wartość funkcji celu i końcowe rozmieszczenie kamer.}
   \label{fig_beta}
 \end{figure}
 \restoregeometry
@@ -614,13 +622,15 @@ zaprezentowane zostały na rys.\ \ref{fig_cam_move_method}. Wykresy są do siebi
 podobne, jednak można zauważyć pewną różnicę w pobliżu 5000 iteracji.
 W przypadku, gdy przemieszczamy kamerę w losowe miejsce, istnieje większa
 szansa na gwałtowną zmianę wartości funkcji celu niż wtedy, gdy kamera jest
-przesuwana tylko o jedną jednostkę w dowolnym kierunku. Na wykresie objawia się
-to większymi ,,skokami'' funkcji celu. Gwałtowność zmian wartości funkcji celu
+przesuwana o jedną jednostkę w dowolnym kierunku. Na wykresie objawia się
+to większymi ,,skokami'' funkcji celu (rys. \ref{fig_cam_move_method:a}).
+Gwałtowność zmian wartości funkcji celu
 w sąsiednich stanach spowodowana może być nie tylko zmianą położenia jednej z kamer,
 ale również dodaniem lub usunięciem kamery. Można więc założyć, że gdy
 parametr $camera\_move\_method$ ma wartość ''local'', to gwałtowną zmianę
-wartości funkcji celu w małym zakresie powodują dwa czynniki: dodanie i usunięcie
-kamery. Jeśli natomiast kamera będzie przesuwana w losowe miejsce, to samo
+wartości funkcji celu podczas przejścia do kolejnego stanu powodują
+dwa czynniki: dodanie i usunięcie
+kamery. Jeśli natomiast kamera będzie przesuwana w losowe miejsce, to
 przesunięcie kamery staje się trzecim czynnikiem wpływającym na występowanie
 gwałtownych zmian wartości funkcji celu. Kombinacja wartości pozostałych
 parametrów użytych w doświadczeniu sprawiła, że sama wartość parametru
